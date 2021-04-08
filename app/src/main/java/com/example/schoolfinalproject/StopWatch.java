@@ -36,8 +36,7 @@ public class StopWatch extends AppCompatActivity {
         format1 = new SimpleDateFormat("yyyy/MM/dd");
 
         txtstopwatch = findViewById(R.id.txtstopwatch);
-        doname = findViewById(R.id.doname);
-        txtkcal = findViewById(R.id.txtkcal);
+
     }
 
     public void mclick(View view) {
