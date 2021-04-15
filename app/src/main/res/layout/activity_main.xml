@@ -37,6 +37,13 @@
         android:text="회원가입"
         android:onClick="doit"
         />
+    <Button
+        android:id="@+id/test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="파싱확인용"
+        android:onClick="doit"
+        />
 
 
 </LinearLayout>
