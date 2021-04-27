@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SchoolFinalProject">
-        <activity android:name=".StopWatch"></activity>
+
+
+        <activity android:name=".GetBlood" />
+        <activity android:name=".CheckBlood" />
+        <activity android:name=".StopWatch" />
         <activity android:name=".Home" />
         <activity android:name=".MainActivity">
             <intent-filter>
