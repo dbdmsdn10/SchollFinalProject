@@ -30,7 +30,6 @@ import java.util.Comparator;
 public class GetBlood extends AppCompatActivity {
     FirebaseUser user;
     FirebaseDatabase database;
-    DatabaseReference myRef;
     ListView listview;
     ArrayList<BloodInfo> arraylist=new ArrayList<>();
     myAdapter adapter;

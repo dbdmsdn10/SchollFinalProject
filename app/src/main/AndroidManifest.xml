@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SchoolFinalProject">
 
-
+        <activity android:name=".GraphScreen">
+        </activity>
         <activity android:name=".GetBlood" />
         <activity android:name=".CheckBlood" />
         <activity android:name=".StopWatch" />

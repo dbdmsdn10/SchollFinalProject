@@ -31,6 +31,10 @@ public class Home extends AppCompatActivity {
                 intent=new Intent(Home.this, GetBlood.class);
                 startActivity(intent);
                 break;
+            case R.id.btngraph:
+                intent=new Intent(Home.this, GraphScreen.class);
+                startActivity(intent);
+                break;
         }
     }
 }
