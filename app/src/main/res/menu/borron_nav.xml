@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_1"
+        android:title="화면 1"/>
+
+    <item
+        android:id="@+id/navigation_2"
+        android:title="화면 2"/>
+
+    <item
+    android:id="@+id/navigation_3"
+    android:title="화면 3"/>
+
+    <item
+        android:id="@+id/navigation_4"
+        android:title="화면 4"/>
+
+    <item
+        android:id="@+id/navigation_5"
+        android:title="화면 5"/>
+
+    <item
+        android:id="@+id/navigation_6"
+        android:title="화면 6"/>
+
+</menu>
