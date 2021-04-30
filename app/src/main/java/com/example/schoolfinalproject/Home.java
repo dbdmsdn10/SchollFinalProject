@@ -35,6 +35,10 @@ public class Home extends AppCompatActivity {
                 intent=new Intent(Home.this, GraphScreen.class);
                 startActivity(intent);
                 break;
+            case R.id.btnCalendar://김무현 추가
+                intent=new Intent(Home.this, MainCalendar.class);
+                startActivity(intent);
+                break;
         }
     }
 }

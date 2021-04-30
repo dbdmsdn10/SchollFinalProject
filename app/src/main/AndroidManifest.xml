@@ -17,6 +17,7 @@
         <activity android:name=".StopWatch" />
         <activity android:name=".Home" />
         <activity android:name=".Logup"></activity>
+
         <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,6 +32,11 @@
         <activity android:name=".MainActivity">
 
         </activity>
+
+        <!--김무현 일정 관련 추가-->
+        <activity android:name=".MainCalendar"/>
+        <activity android:name=".AddCalendar"/>
+        <activity android:name=".EditCalendar"/>
     </application>
 
 </manifest>
