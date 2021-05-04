@@ -35,7 +35,7 @@ public class RingtonePlayingService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         String getState = intent.getExtras().getString("state");
-
+        String time = intent.getExtras().getString("time");
         assert getState != null;
         switch (getState) {
             case "alarm on":
@@ -48,8 +48,8 @@ public class RingtonePlayingService extends Service {
                     ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
 
                     Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                            .setContentTitle("알람시작")
-                            .setContentText("알람음이 재생됩니다.")
+                            .setContentTitle(time)
+                            .setContentText(time)
                             .setSmallIcon(R.mipmap.ic_launcher)
 //                    .setContent(Alarm)
                             .build();

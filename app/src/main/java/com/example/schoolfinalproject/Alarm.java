@@ -5,23 +5,30 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.Calendar;
 
-public class Alarm extends AppCompatActivity{
+public class Alarm extends AppCompatActivity {
 
-    AlarmManager alarm_manager[];
-    TimePicker alarm_timepicker;
+    AlarmManager alarm_manager;
     Context context;
-    PendingIntent pendingIntent;
+
+    TextView waketime, nightTime, cycleTime;
+     Intent my_intent;
+
+
+    int times[] = {0, 0, 0, 0, 0, 0};//0,1은 기상 2,3은 자는시간, 4,5는 사이클
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,65 +37,144 @@ public class Alarm extends AppCompatActivity{
 
         this.context = this;
 
-        alarm_manager=new AlarmManager[5];
-        // 알람매니저 설정
-        alarm_manager[0] = (AlarmManager) getSystemService(ALARM_SERVICE);
+        waketime = findViewById(R.id.edwaketime);
+        nightTime = findViewById(R.id.ednighttime);
+        cycleTime = findViewById(R.id.edcycletime);
 
-        // 타임피커 설정
-        alarm_timepicker = findViewById(R.id.time_picker);
+        alarm_manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        my_intent = new Intent(this.context, Alarm_Reciver.class);
+    }
 
-        // Calendar 객체 생성
-        final Calendar calendar = Calendar.getInstance();
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void doit(View view) {
+        Calendar calendar = Calendar.getInstance();
+        switch (view.getId()) {
+            case R.id.btn_start:
+                int taketime = 0, cycletimeT = 0;
+                if (times[4] == 0 && times[5] == 0) {
+                    Toast.makeText(Alarm.this, "주기시간을 설정해주세요", Toast.LENGTH_SHORT).show();
+                } else {
+                    cycletimeT = times[4] * 60 + times[5];
+                    if (times[0] == times[2] && times[1] == times[3]) {
+                        taketime = 24 * 60;
+                    } else {
+                        if (times[0] > times[2]) {
+                            taketime += ((24 - times[0]) + times[2]) * 60;
+                        } else {
+                            taketime += (times[2] - times[0]) * 60;
+                        }
+                        if (times[1] > times[3]) {
+                            taketime += (60 - times[1]) + times[3] - 60;
+                        } else {
+                            taketime += times[3] - times[1];
+                        }
+                    }
 
-        // 알람리시버 intent 생성
-        final Intent my_intent = new Intent(this.context, Alarm_Reciver.class);
+                    int timesize = taketime / cycletimeT;
+                    // 알람매니저 설정
+                    int hour = times[0];
+                    int min = times[1];
+                    for (int i = 0; i < timesize; i++) {
+                        min += times[5];
+                        if (min >= 60) {
+                            hour++;
+                            min -= 60;
+                        }
+                        hour += times[4];
+                        if (hour > 24) {
+                            hour -= 24;
+                        }
 
-        // 알람 시작 버튼
-        Button alarm_on = findViewById(R.id.btn_start);
-        alarm_on.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onClick(View v) {
-
-                // calendar에 시간 셋팅
-                calendar.set(Calendar.HOUR_OF_DAY, alarm_timepicker.getHour());
-                calendar.set(Calendar.MINUTE, alarm_timepicker.getMinute());
-                calendar.set(Calendar.SECOND,0);
-                // 시간 가져옴
-                int hour = alarm_timepicker.getHour();
-                int minute = alarm_timepicker.getMinute();
-
-                Toast.makeText(Alarm.this,"Alarm 예정 " + hour + "시 " + minute + "분",Toast.LENGTH_SHORT).show();
-
-                // reveiver에 string 값 넘겨주기
-                my_intent.putExtra("state","alarm on");
+                        calendar.set(Calendar.HOUR_OF_DAY, hour);
+                        calendar.set(Calendar.MINUTE, min);
+                        calendar.set(Calendar.SECOND, 0);
 
 
-                    // 알람셋팅
-                pendingIntent = PendingIntent.getBroadcast(Alarm.this, 0, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        boolean b=false;
+                        if (calendar.getTimeInMillis() < Calendar.getInstance().getTimeInMillis()) {
+                            calendar.add(Calendar.DATE, 1);
+                            b=true;
+                        }
+                        String a="Alarm 예정 " + hour + "시 " + min + "분";
+                        my_intent.putExtra("state", "alarm on");
+                        my_intent.putExtra("time", a);
 
-                alarm_manager[0].set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-            }
-        });
+                        // 알람셋팅
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(Alarm.this, i, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // 알람 정지 버튼
-        Button alarm_off = findViewById(R.id.btn_finish);
-        alarm_off.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(Alarm.this,"Alarm 종료",Toast.LENGTH_SHORT).show();
+                        alarm_manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+
+
+
+                        if(b){
+                            calendar.add(Calendar.DATE, -1);
+                        }
+                    }
+                }
+                Toast.makeText(Alarm.this, "알람이 설정되었습니다", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn_finish:
+                Toast.makeText(Alarm.this, "Alarm 종료", Toast.LENGTH_SHORT).show();
                 // 알람매니저 취소
 
                 AlarmManager alarm_manager2 = (AlarmManager) getSystemService(ALARM_SERVICE);
 
 
-                my_intent.putExtra("state","alarm off");
+                my_intent.putExtra("state", "alarm off");
+                int i=0;
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(Alarm.this, i, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);;
 
-                pendingIntent = PendingIntent.getBroadcast(Alarm.this, 0, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
                 alarm_manager2.cancel(pendingIntent);
                 // 알람취소
                 sendBroadcast(my_intent);
-            }
-        });
+
+                break;
+
+            case R.id.edwaketime:
+                calendar = Calendar.getInstance();
+                TimePickerDialog timepicker = new TimePickerDialog(this, 2, waketimelistener, calendar.getTime().getHours(), calendar.getTime().getMinutes(), false);
+                timepicker.show();
+                break;
+            case R.id.ednighttime:
+                calendar = Calendar.getInstance();
+                timepicker = new TimePickerDialog(this, 2, nighttimelistener, calendar.getTime().getHours(), calendar.getTime().getMinutes(), false);
+                timepicker.show();
+                break;
+            case R.id.edcycletime:
+
+                timepicker = new TimePickerDialog(this, 2, cycletimelistener, 0, 0, false);
+                timepicker.show();
+                break;
+            default:
+
+                break;
+        }
     }
+
+    private TimePickerDialog.OnTimeSetListener waketimelistener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+            waketime.setText(hourOfDay + ":" + minute);
+            times[0] = hourOfDay;
+            times[1] = minute;
+        }
+    };
+    private TimePickerDialog.OnTimeSetListener nighttimelistener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            nightTime.setText(hourOfDay + ":" + minute);
+            times[2] = hourOfDay;
+            times[3] = minute;
+        }
+    };
+    private TimePickerDialog.OnTimeSetListener cycletimelistener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            cycleTime.setText(hourOfDay + ":" + minute);
+            times[4] = hourOfDay;
+            times[5] = minute;
+        }
+    };
 }
