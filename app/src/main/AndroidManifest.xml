@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.schoolfinalproject">
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,34 +9,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SchoolFinalProject">
-
-        <activity android:name=".GraphScreen">
-        </activity>
-        <activity android:name=".GetBlood" />
-        <activity android:name=".CheckBlood" />
-        <activity android:name=".StopWatch" />
-        <activity android:name=".Home" />
-        <activity android:name=".Logup"></activity>
-
-        <activity android:name=".Login">
+        <activity android:name=".Alarm">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".MainActivity2">
-
 
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".GraphScreen"></activity>
+        <activity android:name=".GetBlood" />
+        <activity android:name=".CheckBlood" />
+        <activity android:name=".StopWatch" />
+        <activity android:name=".Home" />
+        <activity android:name=".Logup" />
+        <activity android:name=".Login">
 
         </activity>
+        <activity android:name=".MainActivity2"></activity>
+        <activity android:name=".MainActivity"></activity> <!-- 김무현 일정 관련 추가 -->
+        <activity android:name=".MainCalendar" />
+        <activity android:name=".AddCalendar" />
+        <activity android:name=".EditCalendar" />
 
-        <!--김무현 일정 관련 추가-->
-        <activity android:name=".MainCalendar"/>
-        <activity android:name=".AddCalendar"/>
-        <activity android:name=".EditCalendar"/>
+        <receiver android:name=".Alarm_Reciver" />
+
+        <service
+            android:name=".RingtonePlayingService"
+            android:enabled="true"></service>
     </application>
 
 </manifest>
