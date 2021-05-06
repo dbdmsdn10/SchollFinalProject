@@ -30,6 +30,7 @@ public class Logup extends AppCompatActivity {
     DatabaseReference myRef;
     RadioButton male,female;
     boolean passbool=false;
+    Progress progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +119,7 @@ public class Logup extends AppCompatActivity {
                 }else if((!male.isChecked())&&(!female.isChecked())){
                     Toast.makeText(getApplicationContext(), "성별을 선택해주세요", Toast.LENGTH_SHORT).show();
                 }else {
+                    progress=new Progress(Logup.this);
                     registUser(stremail, strpasswd);
                 }
                 break;
@@ -151,8 +153,10 @@ public class Logup extends AppCompatActivity {
                         myRef.push().setValue(mypageInfo);
                         Toast.makeText(getApplicationContext(), "등록 성공", Toast.LENGTH_SHORT).show();
                         database = FirebaseDatabase.getInstance();
+                        progress.stop();
                         finish();
                     } else {
+                        progress.stop();
                         try{
                             throw task.getException();
                         }catch(FirebaseAuthUserCollisionException existEmail){
@@ -161,7 +165,6 @@ public class Logup extends AppCompatActivity {
                         catch(Exception e){
                             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 }
             });

@@ -32,13 +32,14 @@ public class Login extends AppCompatActivity {
     FirebaseDatabase database;
 
     CheckBox checkBox;
-
+    Progress progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         database = FirebaseDatabase.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user!=null) {
+            progress=new Progress(Login.this);
             FirebaseDatabase database3 = FirebaseDatabase.getInstance();
             DatabaseReference myRef3 = database3.getReference("Mypage/" + user.getUid());
             myRef3.addChildEventListener(new ChildEventListener() {
@@ -49,7 +50,10 @@ public class Login extends AppCompatActivity {
                     if(mypageInfo.getAuto().equals("Y")){
                         Intent intent = new Intent(Login.this, Home.class);
                         startActivity(intent);
+                        progress.stop();
                         finish();
+                    }else{
+                        progress.stop();
                     }
                 }
 
@@ -92,6 +96,7 @@ public class Login extends AppCompatActivity {
                 } else if (strpasswd.length() < 8) {
                     Toast.makeText(getApplicationContext(), "비밀번호는 8자리 이상이여야 합니다", Toast.LENGTH_SHORT).show();
                 } else {
+                    progress=new Progress(Login.this);
                     lohinUser(stremail, strpasswd);
                 }
                 break;
@@ -162,8 +167,10 @@ public class Login extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(Login.this, Home.class);
                     startActivity(intent);
+                    progress.stop();
                     finish();
                 } else {
+                    progress.stop();
                     Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_LONG).show();
                 }
             }

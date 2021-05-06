@@ -10,11 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SchoolFinalProject">
         <activity android:name=".Alarm">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
         <activity android:name=".GraphScreen"></activity>
@@ -24,7 +20,11 @@
         <activity android:name=".Home" />
         <activity android:name=".Logup" />
         <activity android:name=".Login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".MainActivity2"></activity>
         <activity android:name=".MainActivity"></activity> <!-- 김무현 일정 관련 추가 -->

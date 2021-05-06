@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="활동종류">
+        <item>아침 식전(8시간 이상 공복)</item>
         <item>식전</item>
         <item>식후</item>
         <item>운동전</item>
         <item>운동후</item>
+        <item>취침전</item>
         <item>약 복용전</item>
         <item>약 복용후</item>
     </string-array>

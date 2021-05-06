@@ -3,8 +3,11 @@ package com.example.schoolfinalproject;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -30,9 +33,14 @@ public class CheckBlood extends AppCompatActivity {
     EditText editblood;
     Spinner editkind;
     TextView btnDay, btnTime;
+    Context context;
 
     SimpleDateFormat dayformat = new SimpleDateFormat("yyyy/MM/dd");
     SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm");
+    boolean whenLowbool[] = {false, false, false}, whenHighbool[] = {false, false, false};
+    //    int whenLowbool[]={0,0,0},whenHighbool[]={0,0,0};
+    String whenLow[] = {"식사를 하지않았습니까?", "술을 섭취하셨습니까?", "1시간 이상의 운동하셨습니까?"};
+    String whenHigh[] = {"탄수화물 섭취가 많았습니까?", "충분한 수면을 취하셨습니까", "스트레스가 많습니까?"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +60,7 @@ public class CheckBlood extends AppCompatActivity {
         String txttime = timeformat.format(date);
         btnDay.setText(txtday);
         btnTime.setText(txttime);
+        context = this;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -63,12 +72,80 @@ public class CheckBlood extends AppCompatActivity {
 
                 String txtblood = editblood.getText().toString();
                 if (!txtblood.equals("")) {
+
                     blood.setBloodSugar(Integer.parseInt(editblood.getText().toString()));
                     blood.setKind(editkind.getSelectedItem().toString());
                     blood.setDate(btnDay.getText().toString() + " " + btnTime.getText().toString());
-                    myRef = database.getReference("blood").child(user.getUid());
-                    myRef.push().setValue(blood);
-                    finish();
+                    if (blood.getBloodSugar() <= 75) {
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                        dialog.setTitle("위험 저혈당입니다").setMessage("포도당이나 사탕등 간식을 섭취후 15분가량 휴식을 취하세요");
+                        //15분후 알람 추가
+                        dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                myRef = database.getReference("blood").child(user.getUid());
+                                myRef.push().setValue(blood);
+                                wheninfoM(0);
+                            }
+                        });
+                        AlertDialog alertDialog = dialog.create();
+                        alertDialog.show();
+
+                    } else if (blood.getBloodSugar() >= 300) {
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                        dialog.setTitle("위험 고혈당입니다").setMessage("약을 섭취하거나 없다면 의사와 상담해보세요");// 약값 받는거 사용해서 있으면 먹으라고함 수정
+                        //15분후 알람 추가
+                        dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                myRef = database.getReference("blood").child(user.getUid());
+                                myRef.push().setValue(blood);
+                                wheninfoM(1);
+                            }
+                        });
+                        AlertDialog alertDialog = dialog.create();
+                        alertDialog.show();
+                    } else if (blood.getBloodSugar() >= 200) {
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                        dialog.setTitle("고혈당입니다").setMessage("약을 섭취하거나 운동을 하는건 어떨까요");// 약값 받는거 사용해서 있으면 먹으라고함 수정
+
+                        dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                myRef = database.getReference("blood").child(user.getUid());
+                                myRef.push().setValue(blood);
+                                wheninfoM(1);
+                            }
+                        });
+                        AlertDialog alertDialog = dialog.create();
+                        alertDialog.show();
+                    } else {//75~200
+                        myRef = database.getReference("blood").child(user.getUid());
+                        myRef.push().setValue(blood);
+                        if(blood.getKind().equals("취침전")&&blood.getBloodSugar()>=150){
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                            dialog.setTitle("조금 고혈당입니다").setMessage("저녁간식을 줄이거나 의사와 상담해보세요");// 약값 받는거 사용해서 있으면 먹으라고함 수정
+                            dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            });
+                            dialog.show();
+                        } else if(blood.getKind().equals("아침 식전(8시간 이상 공복)")&&blood.getBloodSugar()>=150){
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                            dialog.setTitle("조금 고혈당입니다").setMessage("저녁간식을 줄이거나 의사와 상담해보세요");// 약값 받는거 사용해서 있으면 먹으라고함 수정
+                            dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            });
+                            dialog.show();
+                        }else{
+                            finish();
+                        }
+                    }
                 } else {
                     Toast.makeText(this, "혈당치를 입력해주세요", Toast.LENGTH_SHORT).show();
                 }
@@ -105,4 +182,60 @@ public class CheckBlood extends AppCompatActivity {
             btnTime.setText(hourOfDay + ":" + minute);
         }
     };
+
+    public void wheninfoM(int i) {// 이상수치일시 원인분석용
+        AlertDialog.Builder dialog2 = new AlertDialog.Builder(context);
+        if (i == 0) {
+            dialog2.setTitle("원인분석").setMultiChoiceItems(whenLow, null, new DialogInterface.OnMultiChoiceClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                    whenLowbool[which] = isChecked;
+                }
+            }).setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    WhenInfo whenInfo = new WhenInfo();
+                    whenInfo.setHighorLow(i);//0이면 낮은거 1이면 높을때
+                    if (whenLowbool[0]) {
+                        whenInfo.setOne(1);
+                    }
+                    if (whenLowbool[1]) {
+                        whenInfo.setTwo(1);
+                    }
+                    if (whenLowbool[2]) {
+                        whenInfo.setThree(1);
+                    }
+                    myRef = database.getReference("find").child(user.getUid());
+                    myRef.push().setValue(whenInfo);
+                    finish();
+                }
+            }).show();
+        } else if(i==1) {
+            dialog2.setTitle("원인분석").setMultiChoiceItems(whenHigh, null, new DialogInterface.OnMultiChoiceClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                    whenLowbool[which] = isChecked;
+                }
+            }).setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    WhenInfo whenInfo = new WhenInfo();
+                    whenInfo.setHighorLow(i);//0이면 낮은거 1이면 높을때
+                    if (whenLowbool[0]) {
+                        whenInfo.setOne(1);
+                    }
+                    if (whenLowbool[1]) {
+                        whenInfo.setTwo(1);
+                    }
+                    if (whenLowbool[2]) {
+                        whenInfo.setThree(1);
+                    }
+                    myRef = database.getReference("find").child(user.getUid());
+                    myRef.push().setValue(whenInfo);
+                    finish();
+                }
+            }).show();
+        }
+    }
 }
+
