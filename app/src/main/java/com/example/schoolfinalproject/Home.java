@@ -16,6 +16,8 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         user = FirebaseAuth.getInstance().getCurrentUser();
+        
+        setTitle(user.getEmail()+"님 어서오세요");
     }
     public void doit(View view){
         switch (view.getId()){
@@ -37,6 +39,10 @@ public class Home extends AppCompatActivity {
                 break;
             case R.id.btnCalendar://김무현 추가
                 intent=new Intent(Home.this, MainCalendar.class);
+                startActivity(intent);
+                break;
+            case R.id.btnalarm:
+                intent=new Intent(Home.this, Alarm.class);
                 startActivity(intent);
                 break;
         }
