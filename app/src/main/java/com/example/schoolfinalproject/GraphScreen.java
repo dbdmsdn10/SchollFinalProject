@@ -1,17 +1,20 @@
 package com.example.schoolfinalproject;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.charts.BarChart;
+
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -21,19 +24,25 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 public class GraphScreen extends AppCompatActivity {
     FirebaseUser user;
     FirebaseDatabase database;
-    private LineChart chart;
+    private BarChart chart;
 
-    List<Entry> values = new ArrayList<>();
+
     ArrayList<BloodInfo> arraylist = new ArrayList<BloodInfo>();
-    int i=0;
+    XAxis xAxis;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +53,7 @@ public class GraphScreen extends AppCompatActivity {
 
         chart = findViewById(R.id.whatchart);
 
-
+        xAxis = chart.getXAxis();
         refresh();
 
     }
@@ -58,35 +67,9 @@ public class GraphScreen extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                BloodInfo receiptInfo = (BloodInfo) snapshot.getValue(BloodInfo.class);
-//                arraylist.add(receiptInfo);
-//                Collections.sort(arraylist, new Comparator<BloodInfo>() {
-//                    @Override
-//                    public int compare(BloodInfo o1, BloodInfo o2) {
-//                        return o2.getDate().compareTo(o1.getDate());
-//                    }
-//                });
-//                for (int i = 0; i < arraylist.size(); i++) {
-//                    values.add(new Entry(i, arraylist.get(i).bloodSugar));
-//                }
-                values.add(new Entry(i++,receiptInfo.bloodSugar));
-                LineDataSet set1;
-                set1 = new LineDataSet(values, "DataSet 1");
-
-                ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-                dataSets.add(set1); // add the data sets
-
-                // create a data object with the data sets
-                LineData data = new LineData(dataSets);
-
-                // black lines and points
-                set1.setColor(Color.BLACK);
-                set1.setCircleColor(Color.BLACK);
-
-                // set data
-                chart.setData(data);
-
-                chart.invalidate();
+                BloodInfo bloodInfo = (BloodInfo) snapshot.getValue(BloodInfo.class);
+                arraylist.add(bloodInfo);
+                avglist();
             }
 
             @Override
@@ -109,6 +92,64 @@ public class GraphScreen extends AppCompatActivity {
 
             }
         });
+    }
 
+    public void avglist() {
+        int k=5;
+        chart.clear();
+        List<BarEntry> values = new ArrayList<>();
+        HashMap<String,Integer> map=new HashMap();
+        for (int i = 0; i < arraylist.size(); i++) {
+            BloodInfo bloodInfo=arraylist.get(i);
+            String date[] = bloodInfo.getDate().split(" ");
+            if(map.containsKey(date[0])){
+                System.out.println(date[0]+"은=="+map.get(date[0])+"   "+bloodInfo.getBloodSugar()+"   "+(map.get(date[0])+bloodInfo.getBloodSugar())/2);
+                map.put(date[0],(map.get(date[0])+bloodInfo.getBloodSugar())/2);
+            }else{
+                map.put(date[0],bloodInfo.getBloodSugar());
+            }
+        }
+
+        TreeMap<String,Integer> treeMap=new TreeMap<>(Collections.reverseOrder());
+        treeMap.putAll(map);
+        Iterator<String> treeMapReverseIter = treeMap.keySet().iterator();
+        String list[]={"","","","","",""};
+        while(treeMapReverseIter.hasNext()) {
+            if(k<0){
+                break;
+            }
+
+            String key = treeMapReverseIter.next();
+            int value = treeMap.get( key );
+            System.out.println(k+"값= "+key+"  "+value);
+            values.add(new BarEntry(k, value));
+            list[k--]=key;
+
+        }
+        while(k>=0){
+            values.add(new BarEntry(k--, 0));
+        }
+
+//        String[] list = listString.toArray(new String[listString.size()]);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(list));//문자열 삽입
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        BarDataSet set1;
+        set1 = new BarDataSet(values, "");
+
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set1); // add the data sets
+
+
+        // create a data object with the data sets
+        BarData data = new BarData(dataSets);
+
+        // black lines and points
+
+
+        // set data
+        chart.setData(data);
+
+        chart.invalidate();
     }
 }

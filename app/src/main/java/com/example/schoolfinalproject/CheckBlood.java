@@ -56,6 +56,7 @@ public class CheckBlood extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         long now = System.currentTimeMillis();
         Date date = new Date(now);
+
         String txtday = dayformat.format(date);
         String txttime = timeformat.format(date);
         btnDay.setText(txtday);
@@ -122,7 +123,7 @@ public class CheckBlood extends AppCompatActivity {
                     } else {//75~200
                         myRef = database.getReference("blood").child(user.getUid());
                         myRef.push().setValue(blood);
-                        if(blood.getKind().equals("취침전")&&blood.getBloodSugar()>=150){
+                        if (blood.getKind().equals("취침전") && blood.getBloodSugar() >= 150) {
                             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                             dialog.setTitle("조금 고혈당입니다").setMessage("저녁간식을 줄이거나 의사와 상담해보세요");// 약값 받는거 사용해서 있으면 먹으라고함 수정
                             dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -132,7 +133,7 @@ public class CheckBlood extends AppCompatActivity {
                                 }
                             });
                             dialog.show();
-                        } else if(blood.getKind().equals("아침 식전(8시간 이상 공복)")&&blood.getBloodSugar()>=150){
+                        } else if (blood.getKind().equals("아침 식전(8시간 이상 공복)") && blood.getBloodSugar() >= 150) {
                             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                             dialog.setTitle("조금 고혈당입니다").setMessage("저녁간식을 줄이거나 의사와 상담해보세요");// 약값 받는거 사용해서 있으면 먹으라고함 수정
                             dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -142,7 +143,7 @@ public class CheckBlood extends AppCompatActivity {
                                 }
                             });
                             dialog.show();
-                        }else{
+                        } else {
                             finish();
                         }
                     }
@@ -156,7 +157,7 @@ public class CheckBlood extends AppCompatActivity {
                 break;
             case R.id.btnDay:
                 String day[] = btnDay.getText().toString().split("/");
-                DatePickerDialog datePicker = new DatePickerDialog(this, listener, Integer.parseInt(day[0]), Integer.parseInt(day[1]), Integer.parseInt(day[2]));
+                DatePickerDialog datePicker = new DatePickerDialog(this, listener, Integer.parseInt(day[0]), Integer.parseInt(day[1])-1, Integer.parseInt(day[2]));
                 datePicker.show();
                 break;
             case R.id.btnTime:
@@ -172,7 +173,15 @@ public class CheckBlood extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            btnDay.setText(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth);
+            String mon = (monthOfYear + 1) + "";
+            String day = dayOfMonth + "";
+            if ((monthOfYear + 1) < 10) {
+                mon = 0 + mon;
+            }
+            if (dayOfMonth < 10) {
+                day = 0 + day;
+            }
+            btnDay.setText(year + "/" + mon + "/" + day);
         }
     };
 
@@ -183,7 +192,7 @@ public class CheckBlood extends AppCompatActivity {
         }
     };
 
-    public void wheninfoM(int i) {// 이상수치일시 원인분석용
+    public void wheninfoM(int i) {// 이상수치일시 원인분석용, i가 0이면 저혈당 1이면 고혈당
         AlertDialog.Builder dialog2 = new AlertDialog.Builder(context);
         if (i == 0) {
             dialog2.setTitle("원인분석").setMultiChoiceItems(whenLow, null, new DialogInterface.OnMultiChoiceClickListener() {
@@ -210,7 +219,7 @@ public class CheckBlood extends AppCompatActivity {
                     finish();
                 }
             }).show();
-        } else if(i==1) {
+        } else if (i == 1) {
             dialog2.setTitle("원인분석").setMultiChoiceItems(whenHigh, null, new DialogInterface.OnMultiChoiceClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which, boolean isChecked) {

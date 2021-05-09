@@ -5,17 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="#9C28B0"
+
     >
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Fragment2"
-        android:textColor="@android:color/white"
-        android:textSize="30sp"
+        android:text="가장많은 고혈당 원인"
+        android:textSize="40sp"
         android:textStyle="bold"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/txthighreason"
+        android:text="고혈당이 오신적이 없습니다"
+        android:textSize="30sp"
+
+        android:layout_marginBottom="40dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="가장많은 저혈당 원인"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/txtlowreason"
+        android:text="저혈당이 오신적이 없습니다"
+        android:textSize="30sp"
+
         />
     
 </LinearLayout>

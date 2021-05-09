@@ -48,7 +48,7 @@ public class Login extends AppCompatActivity {
                 public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                     MypageInfo mypageInfo = (MypageInfo) snapshot.getValue(MypageInfo.class);
                     if(mypageInfo.getAuto().equals("Y")){
-                        Intent intent = new Intent(Login.this, Home.class);
+                        Intent intent = new Intent(Login.this, MainActivity2.class);
                         startActivity(intent);
                         progress.stop();
                         finish();
@@ -165,7 +165,7 @@ public class Login extends AppCompatActivity {
                         }
                     });
                     Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(Login.this, Home.class);
+                    Intent intent = new Intent(Login.this, MainActivity2.class);
                     startActivity(intent);
                     progress.stop();
                     finish();

@@ -17,14 +17,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:onClick="doit"
             android:text="스톱워치" />
 
         <Button
             android:id="@+id/btnCheckBlood"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="doit"
             android:text="혈당측정" />
     </LinearLayout>
 
@@ -35,18 +33,16 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/showlist"
+            android:id="@+id/btnshowlist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:onClick="doit"
-            android:text="리스트보기" />
+            android:text="혈당리스트보기" />
 
         <Button
             android:id="@+id/btngraph"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="doit"
             android:text="그래프 보기" />
     </LinearLayout>
 
@@ -62,14 +58,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:onClick="doit"
             android:text="일정 보기" />
 
         <Button
             android:id="@+id/btnalarm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="doit"
             android:text="주기알람" />
     </LinearLayout>
 
