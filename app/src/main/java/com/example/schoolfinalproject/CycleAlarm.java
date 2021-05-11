@@ -1,0 +1,211 @@
+package com.example.schoolfinalproject;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Calendar;
+
+public class CycleAlarm extends AppCompatActivity {
+
+    AlarmManager alarm_manager;
+    Context context;
+
+    TextView waketime, nightTime, cycleTime;
+     Intent my_intent;
+    FirebaseUser user;
+    CycleAlarmInfo cycleAlarmInfo2;
+    String snapshotKey;
+
+    int times[] = {0, 0, 0, 0, 0, 0};//0,1은 기상 2,3은 자는시간, 4,5는 사이클
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_alarm);
+        Progress progress=new Progress(CycleAlarm.this);
+        this.context = this;
+
+        waketime = findViewById(R.id.edwaketime);
+        nightTime = findViewById(R.id.ednighttime);
+        cycleTime = findViewById(R.id.edcycletime);
+
+        alarm_manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        my_intent = new Intent(this.context, Alarm_Reciver.class);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database3 = FirebaseDatabase.getInstance();
+        DatabaseReference myRef3 = database3.getReference("Alarm/" + user.getUid()+"/CycleAlarm");
+
+        myRef3.addChildEventListener(new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                cycleAlarmInfo2=(CycleAlarmInfo) snapshot.getValue(CycleAlarmInfo.class);
+                waketime.setText(cycleAlarmInfo2.getStartTime());
+                nightTime.setText(cycleAlarmInfo2.getEndTime());
+                cycleTime.setText(cycleAlarmInfo2.getCycleTime());
+                snapshotKey=snapshot.getKey();
+                String startTime[]=cycleAlarmInfo2.getStartTime().split(":");
+                String endTime[]=cycleAlarmInfo2.getEndTime().split(":");
+                String cycleTime[]=cycleAlarmInfo2.getCycleTime().split(":");
+                times[0]=Integer.parseInt(startTime[0]);
+                times[1]=Integer.parseInt(startTime[1]);
+                times[2]=Integer.parseInt(endTime[0]);
+                times[3]=Integer.parseInt(endTime[1]);
+                times[4]=Integer.parseInt(cycleTime[0]);
+                times[5]=Integer.parseInt(cycleTime[1]);
+                progress.stop();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void doit(View view) {
+        Calendar calendar = Calendar.getInstance();
+        switch (view.getId()) {
+            case R.id.btn_start:
+                if (times[4] == 0 && times[5] == 0) {
+                    Toast.makeText(CycleAlarm.this, "주기시간을 설정해주세요", Toast.LENGTH_SHORT).show();
+                } else {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                    CycleAlarmInfo cycleAlarmInfo=new CycleAlarmInfo();
+                    cycleAlarmInfo.setStartTime(times[0]+":"+times[1]);
+                    cycleAlarmInfo.setEndTime(times[2]+":"+times[3]);
+                    cycleAlarmInfo.setCycleTime(times[4]+":"+times[5]);
+
+                    if(snapshotKey!=null) {
+                        DatabaseReference myRef = database.getReference("Alarm").child(user.getUid()).child("CycleAlarm").child(snapshotKey).child("startTime");
+                        myRef.setValue(cycleAlarmInfo.getStartTime());
+                        myRef = database.getReference("Alarm").child(user.getUid()).child("CycleAlarm").child(snapshotKey).child("endTime");
+                        myRef.setValue(cycleAlarmInfo.getEndTime());
+                        myRef = database.getReference("Alarm").child(user.getUid()).child("CycleAlarm").child(snapshotKey).child("cycleTime");
+                        myRef.setValue(cycleAlarmInfo.getCycleTime());
+                    }else if(cycleAlarmInfo2==null){
+                        FirebaseDatabase database3 = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef3 = database3.getReference("Alarm/" + user.getUid()+"/CycleAlarm");
+                        myRef3.push().setValue(cycleAlarmInfo);
+                    }
+                }
+                alarm();
+                Toast.makeText(CycleAlarm.this, "알람이 설정되었습니다", Toast.LENGTH_SHORT).show();
+
+                break;
+            case R.id.btn_finish:
+                Toast.makeText(CycleAlarm.this, "Alarm 종료", Toast.LENGTH_SHORT).show();
+                // 알람매니저 취소
+
+                AlarmManager alarm_manager2 = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+
+                my_intent.putExtra("state", "alarm off");
+                int i=0;
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(CycleAlarm.this, i, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);;
+
+
+                alarm_manager2.cancel(pendingIntent);
+                // 알람취소
+                sendBroadcast(my_intent);
+
+                break;
+
+            case R.id.edwaketime:
+                calendar = Calendar.getInstance();
+                TimePickerDialog timepicker = new TimePickerDialog(this, 2, waketimelistener, calendar.getTime().getHours(), calendar.getTime().getMinutes(), false);
+                timepicker.show();
+                break;
+            case R.id.ednighttime:
+                calendar = Calendar.getInstance();
+                timepicker = new TimePickerDialog(this, 2, nighttimelistener, calendar.getTime().getHours(), calendar.getTime().getMinutes(), false);
+                timepicker.show();
+                break;
+            case R.id.edcycletime:
+
+                timepicker = new TimePickerDialog(this, 2, cycletimelistener, 0, 0, false);
+                timepicker.show();
+                break;
+            default:
+
+                break;
+        }
+    }
+
+    private TimePickerDialog.OnTimeSetListener waketimelistener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+            waketime.setText(hourOfDay + ":" + minute);
+            times[0] = hourOfDay;
+            times[1] = minute;
+        }
+    };
+    private TimePickerDialog.OnTimeSetListener nighttimelistener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            nightTime.setText(hourOfDay + ":" + minute);
+            times[2] = hourOfDay;
+            times[3] = minute;
+        }
+    };
+    private TimePickerDialog.OnTimeSetListener cycletimelistener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            cycleTime.setText(hourOfDay + ":" + minute);
+            times[4] = hourOfDay;
+            times[5] = minute;
+        }
+    };
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void alarm(){
+        System.out.println("알람메도스");
+        Alarm alarm=new Alarm();
+        alarm.alarm2(context,alarm_manager);
+    }
+
+
+}

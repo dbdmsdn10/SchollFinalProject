@@ -42,7 +42,7 @@ public class Home extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.btnalarm:
-                intent=new Intent(Home.this, Alarm.class);
+                intent=new Intent(Home.this, CycleAlarm.class);
                 startActivity(intent);
                 break;
         }

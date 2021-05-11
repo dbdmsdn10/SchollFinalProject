@@ -6,9 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CalendarView;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -54,7 +51,7 @@ public class Fragment1 extends Fragment {
             startActivity(intent);
         });
         alarm.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), Alarm.class);
+            Intent intent = new Intent(getActivity(), CycleAlarm.class);
             startActivity(intent);
         });
 

@@ -1,9 +1,12 @@
 package com.example.schoolfinalproject;
 
+import android.app.AlarmManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -17,12 +20,16 @@ public class MainActivity2 extends AppCompatActivity {
     Fragment3 fragment3; // 기능3
     FirebaseUser user;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         user = FirebaseAuth.getInstance().getCurrentUser();
+        Alarm alarm=new Alarm();
+        AlarmManager larm_manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarm.alarm2(this,larm_manager);
 
         setTitle(user.getEmail()+"님 어서오세요");
 

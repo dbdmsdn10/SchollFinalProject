@@ -13,10 +13,10 @@ public class Alarm_Reciver extends BroadcastReceiver {
 
         this.context = context;
         // intent로부터 전달받은 string
-        System.out.println("알람시작");
+
         String get_yout_string = intent.getExtras().getString("state");
         String time = intent.getExtras().getString("time");
-
+        System.out.println(time+"알람시작");
         // RingtonePlayingService 서비스 intent 생성
         Intent service_intent = new Intent(context, RingtonePlayingService.class);
 
