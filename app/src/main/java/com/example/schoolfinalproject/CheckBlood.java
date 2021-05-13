@@ -152,9 +152,7 @@ public class CheckBlood extends AppCompatActivity {
                 }
 
                 break;
-            case R.id.btncancle:
-                finish();
-                break;
+
             case R.id.btnDay:
                 String day[] = btnDay.getText().toString().split("/");
                 DatePickerDialog datePicker = new DatePickerDialog(this, listener, Integer.parseInt(day[0]), Integer.parseInt(day[1])-1, Integer.parseInt(day[2]));

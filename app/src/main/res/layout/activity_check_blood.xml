@@ -57,13 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="확인"
+            android:text="적용"
             android:onClick="doit"/>
-
-        <Button
-            android:id="@+id/btncancle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="취소" />
     </LinearLayout>
 </LinearLayout>

@@ -15,7 +15,7 @@ public class Fragment1 extends Fragment {
 
 
     ViewGroup viewGroup;
-    Button stopwatch, CheckBlood, showlist, graph, Calendar, alarm;
+    Button stopwatch, CheckBlood, showlist, graph, Calendar, cycle,meal,drug;
 
     @Nullable
     @Override
@@ -27,7 +27,10 @@ public class Fragment1 extends Fragment {
         showlist=viewGroup.findViewById(R.id.btnshowlist);
         graph=viewGroup.findViewById(R.id.btngraph);
         Calendar=viewGroup.findViewById(R.id.btnCalendar);
-        alarm=viewGroup.findViewById(R.id.btnalarm);
+        cycle=viewGroup.findViewById(R.id.btnalarm);
+        meal=viewGroup.findViewById(R.id.btnmeal);
+        drug=viewGroup.findViewById(R.id.btndrug);
+
 
         stopwatch.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), StopWatch.class);
@@ -50,14 +53,23 @@ public class Fragment1 extends Fragment {
             Intent intent = new Intent(getActivity(), MainCalendar.class);
             startActivity(intent);
         });
-        alarm.setOnClickListener(v -> {
+        cycle.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), CycleAlarm.class);
+            startActivity(intent);
+        });
+        meal.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), MealAlarm.class);
+            startActivity(intent);
+        });
+        drug.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), DrugAlarm.class);
             startActivity(intent);
         });
 
 
         return viewGroup;
     }
+
 
 
 }

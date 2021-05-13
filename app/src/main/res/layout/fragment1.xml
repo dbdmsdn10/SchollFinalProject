@@ -17,7 +17,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="스톱워치" />
+            android:text="스톱워치"
+            />
 
         <Button
             android:id="@+id/btnCheckBlood"
@@ -65,6 +66,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="주기알람" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnmeal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="식사시간 설정" />
+
+        <Button
+            android:id="@+id/btndrug"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="먹는약 설정" />
     </LinearLayout>
 
 </LinearLayout>

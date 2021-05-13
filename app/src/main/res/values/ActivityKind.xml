@@ -10,4 +10,59 @@
         <item>약 복용전</item>
         <item>약 복용후</item>
     </string-array>
+    <string-array name="약종류">
+        <item>없음</item>
+        <item>기타</item>
+        <item>글루레노름</item>
+        <item>글루코파지</item>
+        <item>글루파</item>
+        <item>글루패스트</item>
+        <item>노바메트</item>
+        <item>노보놈</item>
+        <item>노보래피드</item>
+        <item>노보믹스30</item>
+        <item>노보믹스50</item>
+        <item>다오닐</item>
+        <item>디아미크롱</item>
+        <item>보글리보스</item>
+        <item>아마릴</item>
+        <item>아카보스</item>
+        <item>에피드라</item>
+        <item>파스틱</item>
+        <item>휴마로그</item>
+        <item>휴마로그믹스30</item>
+        <item>휴마로그믹스50</item>
+        <item>휴물린 엔</item>
+    </string-array>
+    <string-array name="개인약설정">
+        <item>직접 설정하기</item>
+        <item>식전30분</item>
+        <item>식후15~직전</item>
+        <item>식사 직후</item>
+    </string-array>
+    <string-array name="식전30분">
+        <item>아마릴</item>
+        <item>다오닐</item>
+        <item>디아미크롱</item>
+        <item>글루레노름</item>
+        <item>휴물린 엔</item>
+    </string-array>
+    <string-array name="식전15분">
+        <item>노보놈</item>
+        <item>파스틱</item>
+        <item>글루패스트</item>
+        <item>아카보스</item>
+        <item>보글리보스</item>
+        <item>에피드라</item>
+        <item>휴마로그</item>
+        <item>노보믹스30</item>
+        <item>휴마로그믹스30</item>
+        <item>휴마로그믹스50</item>
+        <item>노보믹스50</item>
+    </string-array>
+    <string-array name="식후">
+        <item>글루코파지</item>
+        <item>글루파</item>
+        <item>노바메트</item>
+    </string-array>
 </resources>

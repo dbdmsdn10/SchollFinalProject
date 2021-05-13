@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.schoolfinalproject">
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/mainicon"
@@ -9,11 +11,10 @@
         android:roundIcon="@mipmap/mainicon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SchoolFinalProject">
-        <activity android:name=".CycleAlarm">
-
-
-        </activity>
-        <activity android:name=".GraphScreen"></activity>
+        <activity android:name=".DrugAlarm"></activity>
+        <activity android:name=".MealAlarm" />
+        <activity android:name=".CycleAlarm" />
+        <activity android:name=".GraphScreen" />
         <activity android:name=".GetBlood" />
         <activity android:name=".CheckBlood" />
         <activity android:name=".StopWatch" />
@@ -26,8 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity2"></activity>
-        <!-- 김무현 일정 관련 추가 -->
+        <activity android:name=".MainActivity2" /> <!-- 김무현 일정 관련 추가 -->
         <activity android:name=".MainCalendar" />
         <activity android:name=".AddCalendar" />
         <activity android:name=".EditCalendar" />
@@ -36,7 +36,7 @@
 
         <service
             android:name=".RingtonePlayingService"
-            android:enabled="true"></service>
+            android:enabled="true" />
     </application>
 
 </manifest>

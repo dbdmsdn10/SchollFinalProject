@@ -33,9 +33,9 @@ public class CycleAlarm extends AppCompatActivity {
     Context context;
 
     TextView waketime, nightTime, cycleTime;
-     Intent my_intent;
+    Intent my_intent;
     FirebaseUser user;
-    CycleAlarmInfo cycleAlarmInfo2;
+    AlarmInfo alarmInfo2;
     String snapshotKey;
 
     int times[] = {0, 0, 0, 0, 0, 0};//0,1은 기상 2,3은 자는시간, 4,5는 사이클
@@ -44,7 +44,7 @@ public class CycleAlarm extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
-        Progress progress=new Progress(CycleAlarm.this);
+        Progress progress = new Progress(CycleAlarm.this);
         this.context = this;
 
         waketime = findViewById(R.id.edwaketime);
@@ -58,27 +58,29 @@ public class CycleAlarm extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         FirebaseDatabase database3 = FirebaseDatabase.getInstance();
-        DatabaseReference myRef3 = database3.getReference("Alarm/" + user.getUid()+"/CycleAlarm");
+        DatabaseReference myRef3 = database3.getReference("Alarm/" + user.getUid());
 
         myRef3.addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                cycleAlarmInfo2=(CycleAlarmInfo) snapshot.getValue(CycleAlarmInfo.class);
-                waketime.setText(cycleAlarmInfo2.getStartTime());
-                nightTime.setText(cycleAlarmInfo2.getEndTime());
-                cycleTime.setText(cycleAlarmInfo2.getCycleTime());
-                snapshotKey=snapshot.getKey();
-                String startTime[]=cycleAlarmInfo2.getStartTime().split(":");
-                String endTime[]=cycleAlarmInfo2.getEndTime().split(":");
-                String cycleTime[]=cycleAlarmInfo2.getCycleTime().split(":");
-                times[0]=Integer.parseInt(startTime[0]);
-                times[1]=Integer.parseInt(startTime[1]);
-                times[2]=Integer.parseInt(endTime[0]);
-                times[3]=Integer.parseInt(endTime[1]);
-                times[4]=Integer.parseInt(cycleTime[0]);
-                times[5]=Integer.parseInt(cycleTime[1]);
-                progress.stop();
+                alarmInfo2 = (AlarmInfo) snapshot.getValue(AlarmInfo.class);
+                if(alarmInfo2.getStartTime()!=null) {
+                    waketime.setText(alarmInfo2.getStartTime());
+                    nightTime.setText(alarmInfo2.getEndTime());
+                    cycleTime.setText(alarmInfo2.getCycleTime());
+
+                    String startTime[] = alarmInfo2.getStartTime().split(":");
+                    String endTime[] = alarmInfo2.getEndTime().split(":");
+                    String cycleTime[] = alarmInfo2.getCycleTime().split(":");
+                    times[0] = Integer.parseInt(startTime[0]);
+                    times[1] = Integer.parseInt(startTime[1]);
+                    times[2] = Integer.parseInt(endTime[0]);
+                    times[3] = Integer.parseInt(endTime[1]);
+                    times[4] = Integer.parseInt(cycleTime[0]);
+                    times[5] = Integer.parseInt(cycleTime[1]);
+                }
+                snapshotKey = snapshot.getKey();
             }
 
             @Override
@@ -101,6 +103,7 @@ public class CycleAlarm extends AppCompatActivity {
 
             }
         });
+        progress.stop();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -108,32 +111,35 @@ public class CycleAlarm extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         switch (view.getId()) {
             case R.id.btn_start:
-                if (times[4] == 0 && times[5] == 0) {
+                if (times[0] + times[1] == 0) {
+                    Toast.makeText(CycleAlarm.this, "기상시간을 설정해주세요", Toast.LENGTH_SHORT).show();
+                } else if (times[2] + times[3] == 0) {
+                    Toast.makeText(CycleAlarm.this, "잘시간을 설정해주세요", Toast.LENGTH_SHORT).show();
+                } else if (times[4] == 0 && times[5] == 0) {
                     Toast.makeText(CycleAlarm.this, "주기시간을 설정해주세요", Toast.LENGTH_SHORT).show();
                 } else {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-                    CycleAlarmInfo cycleAlarmInfo=new CycleAlarmInfo();
-                    cycleAlarmInfo.setStartTime(times[0]+":"+times[1]);
-                    cycleAlarmInfo.setEndTime(times[2]+":"+times[3]);
-                    cycleAlarmInfo.setCycleTime(times[4]+":"+times[5]);
+                    AlarmInfo alarmInfo = new AlarmInfo();
+                    alarmInfo.setStartTime(times[0] + ":" + times[1]);
+                    alarmInfo.setEndTime(times[2] + ":" + times[3]);
+                    alarmInfo.setCycleTime(times[4] + ":" + times[5]);
 
-                    if(snapshotKey!=null) {
-                        DatabaseReference myRef = database.getReference("Alarm").child(user.getUid()).child("CycleAlarm").child(snapshotKey).child("startTime");
-                        myRef.setValue(cycleAlarmInfo.getStartTime());
-                        myRef = database.getReference("Alarm").child(user.getUid()).child("CycleAlarm").child(snapshotKey).child("endTime");
-                        myRef.setValue(cycleAlarmInfo.getEndTime());
-                        myRef = database.getReference("Alarm").child(user.getUid()).child("CycleAlarm").child(snapshotKey).child("cycleTime");
-                        myRef.setValue(cycleAlarmInfo.getCycleTime());
-                    }else if(cycleAlarmInfo2==null){
+                    if (snapshotKey != null) {
+                        DatabaseReference myRef = database.getReference("Alarm").child(user.getUid()).child(snapshotKey).child("startTime");
+                        myRef.setValue(alarmInfo.getStartTime());
+                        myRef = database.getReference("Alarm").child(user.getUid()).child(snapshotKey).child("endTime");
+                        myRef.setValue(alarmInfo.getEndTime());
+                        myRef = database.getReference("Alarm").child(user.getUid()).child(snapshotKey).child("cycleTime");
+                        myRef.setValue(alarmInfo.getCycleTime());
+                    } else if (alarmInfo2 == null) {
                         FirebaseDatabase database3 = FirebaseDatabase.getInstance();
-                        DatabaseReference myRef3 = database3.getReference("Alarm/" + user.getUid()+"/CycleAlarm");
-                        myRef3.push().setValue(cycleAlarmInfo);
+                        DatabaseReference myRef3 = database3.getReference("Alarm/" + user.getUid());
+                        myRef3.push().setValue(alarmInfo);
                     }
+                    alarm();
+                    Toast.makeText(CycleAlarm.this, "알람이 설정되었습니다", Toast.LENGTH_SHORT).show();
                 }
-                alarm();
-                Toast.makeText(CycleAlarm.this, "알람이 설정되었습니다", Toast.LENGTH_SHORT).show();
-
                 break;
             case R.id.btn_finish:
                 Toast.makeText(CycleAlarm.this, "Alarm 종료", Toast.LENGTH_SHORT).show();
@@ -143,8 +149,9 @@ public class CycleAlarm extends AppCompatActivity {
 
 
                 my_intent.putExtra("state", "alarm off");
-                int i=0;
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(CycleAlarm.this, i, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);;
+                int i = 0;
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(CycleAlarm.this, i, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                ;
 
 
                 alarm_manager2.cancel(pendingIntent);
@@ -201,10 +208,9 @@ public class CycleAlarm extends AppCompatActivity {
     };
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void alarm(){
-        System.out.println("알람메도스");
-        Alarm alarm=new Alarm();
-        alarm.alarm2(context,alarm_manager);
+    public void alarm() {
+        Alarm alarm = new Alarm();
+        alarm.alarm2(context, alarm_manager);
     }
 
 
