@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
@@ -142,7 +143,7 @@ public class DrugAlarm extends AppCompatActivity {
             }
         });
         progress.stop();
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -253,5 +254,15 @@ public class DrugAlarm extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "약 알람이 설정되었습니다", Toast.LENGTH_SHORT).show();
             alarm.alarm2(this,larm_manager);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

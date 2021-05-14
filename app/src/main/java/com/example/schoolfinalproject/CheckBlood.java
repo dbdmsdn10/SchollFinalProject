@@ -1,5 +1,6 @@
 package com.example.schoolfinalproject;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -62,6 +64,7 @@ public class CheckBlood extends AppCompatActivity {
         btnDay.setText(txtday);
         btnTime.setText(txttime);
         context = this;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -243,6 +246,16 @@ public class CheckBlood extends AppCompatActivity {
                 }
             }).show();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 

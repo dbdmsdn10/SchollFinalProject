@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -104,6 +105,7 @@ public class CycleAlarm extends AppCompatActivity {
             }
         });
         progress.stop();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -211,6 +213,16 @@ public class CycleAlarm extends AppCompatActivity {
     public void alarm() {
         Alarm alarm = new Alarm();
         alarm.alarm2(context, alarm_manager);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

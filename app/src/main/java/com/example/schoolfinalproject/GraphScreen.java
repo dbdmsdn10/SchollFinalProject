@@ -1,6 +1,7 @@
 package com.example.schoolfinalproject;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,7 +56,7 @@ public class GraphScreen extends AppCompatActivity {
 
         xAxis = chart.getXAxis();
         refresh();
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public void refresh() {
@@ -151,5 +152,15 @@ public class GraphScreen extends AppCompatActivity {
         chart.setData(data);
 
         chart.invalidate();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
