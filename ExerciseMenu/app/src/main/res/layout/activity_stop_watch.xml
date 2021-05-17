@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/k01"
+    tools:context=".StopWatchActivity">
+
+    <TextView
+        android:fontFamily="@font/fontshape"
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="StopWatch"
+        android:textColor="#000000"
+        android:textSize="50sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Chronometer
+        android:fontFamily="@font/fontshape"
+        android:id="@+id/chronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="50sp"/>
+    <Button
+        android:fontFamily="@font/fontshape"
+        android:background="@drawable/buttonshape"
+        android:layout_margin="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="시작"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:onClick="startChronometer"/>
+    <Button
+        android:fontFamily="@font/fontshape"
+        android:background="@drawable/buttonshape"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="멈춤"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:onClick="pauseChronometer"/>
+    <Button
+        android:fontFamily="@font/fontshape"
+        android:background="@drawable/buttonshape"
+        android:layout_margin="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="초기화"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:onClick="resetChronometer"/>
+
+
+
+</LinearLayout>
