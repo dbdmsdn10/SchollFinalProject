@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ public class GetBlood extends AppCompatActivity {
     ListView listview;
     ArrayList<BloodInfo> arraylist=new ArrayList<>();
     myAdapter adapter;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,7 @@ public class GetBlood extends AppCompatActivity {
         user= FirebaseAuth.getInstance().getCurrentUser();
         adapter=new myAdapter(arraylist,getApplicationContext());
         listview.setAdapter(adapter);
+        context=getApplicationContext();
         refresh();
     }
 
@@ -76,6 +79,11 @@ public class GetBlood extends AppCompatActivity {
             BloodInfo info=arraylist.get(position);
             TextView textView=convertView.findViewById(R.id.txttext);
             textView.setText("날짜: "+info.getDate()+"\n종류: "+info.getKind()+"\n혈당:  "+info.getBloodSugar());
+
+            convertView.setOnClickListener(v -> {
+                Intent intent=new Intent(context,EditBlood.class);
+                startActivity(intent);
+            });
             return convertView;
         }
     }

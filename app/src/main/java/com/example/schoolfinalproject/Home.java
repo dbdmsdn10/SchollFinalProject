@@ -22,7 +22,7 @@ public class Home extends AppCompatActivity {
     public void doit(View view){
         switch (view.getId()){
             case R.id.btnstopwatch:
-                Intent intent=new Intent(Home.this, StopWatch.class);
+                Intent intent=new Intent(Home.this, Excercise.class);
                 startActivity(intent);
                 break;
             case R.id.btnCheckBlood:

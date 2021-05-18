@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/k01"
+    tools:context=".Pedometer">
+
+    <TextView
+        android:fontFamily="@font/fontshape"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="만보기"
+        android:textColor="#000000"
+        android:textSize="50dp" />
+
+    <TextView
+        android:fontFamily="@font/fontshape"
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="오늘의 걸음 수 : "
+        android:textColor="#000000"
+        android:textSize="30dp" />
+
+    <TextView
+        android:fontFamily="@font/fontshape"
+        android:id="@+id/tvStepCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="0"
+        android:textColor="#000000"
+        android:textSize="50dp" />
+
+</LinearLayout>

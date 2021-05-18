@@ -11,13 +11,15 @@
         android:roundIcon="@mipmap/mainicon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SchoolFinalProject">
+        
+
         <activity android:name=".DrugAlarm"></activity>
+        <activity android:name=".EditBlood"></activity>
         <activity android:name=".MealAlarm" />
         <activity android:name=".CycleAlarm" />
         <activity android:name=".GraphScreen" />
         <activity android:name=".GetBlood" />
         <activity android:name=".CheckBlood" />
-        <activity android:name=".StopWatch" />
         <activity android:name=".Home" />
         <activity android:name=".Logup" />
         <activity android:name=".Login">
@@ -31,6 +33,9 @@
         <activity android:name=".MainCalendar" />
         <activity android:name=".AddCalendar" />
         <activity android:name=".EditCalendar" />
+        <activity android:name=".Excercise"/>
+        <activity android:name=".Pedometer"/>
+        <activity android:name=".StopWatchActivity"/>
 
         <receiver android:name=".Alarm_Reciver" />
 
