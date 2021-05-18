@@ -4,6 +4,7 @@ public class BloodInfo {
     String kind;
     int bloodSugar;
     String date;
+    String key;
 
     public String getKind() {
         return kind;
@@ -27,5 +28,13 @@ public class BloodInfo {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

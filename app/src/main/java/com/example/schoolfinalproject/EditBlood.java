@@ -9,10 +9,12 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -36,6 +38,7 @@ public class EditBlood extends AppCompatActivity {
     Spinner editkind;
     TextView btnDay, btnTime;
     Context context;
+    Button btnsetblood;
 
     SimpleDateFormat dayformat = new SimpleDateFormat("yyyy/MM/dd");
     SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm");
@@ -43,11 +46,32 @@ public class EditBlood extends AppCompatActivity {
     //    int whenLowbool[]={0,0,0},whenHighbool[]={0,0,0};
     String whenLow[] = {"식사를 하지않았습니까?", "술을 섭취하셨습니까?", "1시간 이상의 운동하셨습니까?"};
     String whenHigh[] = {"탄수화물 섭취가 많았습니까?", "충분한 수면을 취하셨습니까", "스트레스가 많습니까?"};
+    Intent intent;
+    String array[];
+    int intkind;
+    String key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_blood);
+        array=getResources().getStringArray(R.array.활동종류);
+        btnsetblood =findViewById(R.id.btnsetblood);
+        btnsetblood.setText("수정");
+        intent=getIntent();
+        String days[]=intent.getStringExtra("날자").split(" ");
+        String kind=intent.getStringExtra("종류");
+        String bloodsugar=intent.getStringExtra("혈당");
+        key=intent.getStringExtra("key");
+        for(int i=0;i<array.length;i++){
+            if(array[i].equals(kind)){
+                intkind=i;
+                break;
+            }
+        }
+
+
+
 
         database = FirebaseDatabase.getInstance();
         editblood = findViewById(R.id.editblood);
@@ -59,10 +83,13 @@ public class EditBlood extends AppCompatActivity {
         long now = System.currentTimeMillis();
         Date date = new Date(now);
 
-        String txtday = dayformat.format(date);
-        String txttime = timeformat.format(date);
+        String txtday = days[0];
+        String txttime = days[1];
         btnDay.setText(txtday);
         btnTime.setText(txttime);
+        editkind.setSelection(intkind);
+
+        editblood.setText(bloodsugar);
         context = this;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -87,8 +114,8 @@ public class EditBlood extends AppCompatActivity {
                         dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                myRef = database.getReference("blood").child(user.getUid());
-                                myRef.push().setValue(blood);
+                                myRef = database.getReference("blood").child(user.getUid()).child(key);
+                                myRef.setValue(blood);
                                 wheninfoM(0);
                             }
                         });
@@ -102,8 +129,8 @@ public class EditBlood extends AppCompatActivity {
                         dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                myRef = database.getReference("blood").child(user.getUid());
-                                myRef.push().setValue(blood);
+                                myRef = database.getReference("blood").child(user.getUid()).child(key);
+                                myRef.setValue(blood);
                                 wheninfoM(1);
                             }
                         });
@@ -116,22 +143,23 @@ public class EditBlood extends AppCompatActivity {
                         dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                myRef = database.getReference("blood").child(user.getUid());
-                                myRef.push().setValue(blood);
+                                myRef = database.getReference("blood").child(user.getUid()).child(key);
+                                myRef.setValue(blood);
                                 wheninfoM(1);
                             }
                         });
                         AlertDialog alertDialog = dialog.create();
                         alertDialog.show();
                     } else {//75~200
-                        myRef = database.getReference("blood").child(user.getUid());
-                        myRef.push().setValue(blood);
+                        myRef = database.getReference("blood").child(user.getUid()).child(key);
+                        myRef.setValue(blood);
                         if (blood.getKind().equals("취침전") && blood.getBloodSugar() >= 150) {
                             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                             dialog.setTitle("조금 고혈당입니다").setMessage("저녁간식을 줄이거나 의사와 상담해보세요");// 약값 받는거 사용해서 있으면 먹으라고함 수정
                             dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    setResult(0);
                                     finish();
                                 }
                             });
@@ -142,11 +170,16 @@ public class EditBlood extends AppCompatActivity {
                             dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    setResult(0);
                                     finish();
                                 }
                             });
                             dialog.show();
                         } else {
+                            setResult(0);
+                            WhenInfo whenInfo = new WhenInfo();
+                            myRef = database.getReference("find").child(user.getUid()).child(key);
+                            myRef.setValue(whenInfo);
                             finish();
                         }
                     }
@@ -215,8 +248,9 @@ public class EditBlood extends AppCompatActivity {
                     if (whenLowbool[2]) {
                         whenInfo.setThree(1);
                     }
-                    myRef = database.getReference("find").child(user.getUid());
-                    myRef.push().setValue(whenInfo);
+                    myRef = database.getReference("find").child(user.getUid()).child(key);
+                    myRef.setValue(whenInfo);
+                    setResult(0);
                     finish();
                 }
             }).show();
@@ -240,8 +274,9 @@ public class EditBlood extends AppCompatActivity {
                     if (whenLowbool[2]) {
                         whenInfo.setThree(1);
                     }
-                    myRef = database.getReference("find").child(user.getUid());
-                    myRef.push().setValue(whenInfo);
+                    myRef = database.getReference("find").child(user.getUid()).child(key);
+                    myRef.setValue(whenInfo);
+                    setResult(0);
                     finish();
                 }
             }).show();
@@ -252,6 +287,7 @@ public class EditBlood extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
+                setResult(0);
                 finish();
                 return true;
         }

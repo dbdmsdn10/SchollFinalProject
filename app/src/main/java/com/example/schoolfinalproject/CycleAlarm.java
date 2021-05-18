@@ -137,7 +137,9 @@ public class CycleAlarm extends AppCompatActivity {
                     } else if (alarmInfo2 == null) {
                         FirebaseDatabase database3 = FirebaseDatabase.getInstance();
                         DatabaseReference myRef3 = database3.getReference("Alarm/" + user.getUid());
+                        alarm();
                         myRef3.push().setValue(alarmInfo);
+                        finish();
                     }
                     alarm();
                     Toast.makeText(CycleAlarm.this, "알람이 설정되었습니다", Toast.LENGTH_SHORT).show();
@@ -176,6 +178,23 @@ public class CycleAlarm extends AppCompatActivity {
 
                 timepicker = new TimePickerDialog(this, 2, cycletimelistener, 0, 0, false);
                 timepicker.show();
+                break;
+
+            case R.id.btn_reset:
+                if(alarmInfo2==null){
+                }else{
+                    alarmInfo2.setStartTime(null);
+                    alarmInfo2.setEndTime(null);
+                    alarmInfo2.setCycleTime(null);
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference("Alarm").child(user.getUid()).child(snapshotKey).child("startTime");
+                    myRef.setValue(alarmInfo2.getStartTime());
+
+                    waketime.setText("HH:MM");
+                    nightTime.setText("HH:MM");
+                    cycleTime.setText("HH:MM");
+                    alarm();
+                }
                 break;
             default:
 

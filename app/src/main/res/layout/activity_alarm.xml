@@ -98,6 +98,12 @@
             android:layout_height="wrap_content"
             android:text="알람 끄기"
             android:onClick="doit"/>
+        <Button
+            android:id="@+id/btn_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="초기화"
+            android:onClick="doit"/>
 
     </LinearLayout>
 

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -151,6 +152,26 @@ public class MealAlarm extends AppCompatActivity {
                     timepicker = new TimePickerDialog(this, 2, dinnerlistener, Integer.parseInt(time[0]), Integer.parseInt(time[1]), false);
                 }
                 timepicker.show();
+                break;
+            case R.id.btn_reset:
+                if(alarmInfo==null){
+                }else if(alarmInfo.getDrugresult()>0){
+                    Toast.makeText(MealAlarm.this, "약 알람이 존재하여 초기화 할수없습니다", Toast.LENGTH_SHORT).show();
+                }else{
+                    alarmInfo.setBreakfirst(null);
+                    alarmInfo.setLunch(null);
+                    alarmInfo.setDinner(null);
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference("Alarm").child(user.getUid()).child(snapshotKey);
+                    myRef.setValue(alarmInfo);
+
+                    breakfirst.setText("HH:MM");
+                    lunch.setText("HH:MM");
+                    dinner.setText("HH:MM");
+                    alarm=new Alarm();
+                    alarm_manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                    alarm.alarm2(context,alarm_manager);
+                }
                 break;
             default:
                 break;

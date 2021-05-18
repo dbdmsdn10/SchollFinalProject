@@ -33,6 +33,7 @@ public class GetBlood extends AppCompatActivity {
     FirebaseDatabase database;
     ListView listview;
     ArrayList<BloodInfo> arraylist=new ArrayList<>();
+
     myAdapter adapter;
     Context context;
     @Override
@@ -82,7 +83,12 @@ public class GetBlood extends AppCompatActivity {
 
             convertView.setOnClickListener(v -> {
                 Intent intent=new Intent(context,EditBlood.class);
-                startActivity(intent);
+                intent.putExtra("날자",info.getDate());
+                intent.putExtra("종류",info.getKind());
+                intent.putExtra("혈당",info.getBloodSugar()+"");
+                intent.putExtra("key",info.getKey()+"");
+                startActivityForResult(intent,0);
+
             });
             return convertView;
         }
@@ -96,6 +102,7 @@ public class GetBlood extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 BloodInfo receiptInfo=(BloodInfo)snapshot.getValue(BloodInfo.class);
+                receiptInfo.setKey(snapshot.getKey());
                 arraylist.add(receiptInfo);
                 Collections.sort(arraylist, new Comparator<BloodInfo>() {
                     @Override
@@ -127,5 +134,13 @@ public class GetBlood extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==0){
+            refresh();
+        }
     }
 }

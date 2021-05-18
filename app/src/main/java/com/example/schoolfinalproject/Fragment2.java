@@ -27,7 +27,7 @@ public class Fragment2 extends Fragment {
     int count[][] = new int[2][3];
 
     String whenLow[] = {"식사를 하지않았습니다", "술을 섭취하셨습니다", "1시간 이상의 운동하셨습니다"};
-    String whenHigh[] = {"탄수화물 섭취가 많았습니다", "충분한 수면을 취하셨습니다", "스트레스가 많습니다"};
+    String whenHigh[] = {"탄수화물 섭취가 많았습니다", "수면을 취하지 못했습니다", "스트레스가 많습니다"};
 
 
     @Nullable
@@ -102,7 +102,7 @@ public class Fragment2 extends Fragment {
                 high=count[1][i];
                 sethigh=whenHigh[i];
             }else if(count[1][i]!=0&&high==count[1][i]){
-                sethigh+=whenHigh[i];
+                sethigh=("\n"+whenHigh[i]);
             }
         }
         highReason.setText(sethigh);

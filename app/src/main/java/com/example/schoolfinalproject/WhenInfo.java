@@ -2,7 +2,7 @@ package com.example.schoolfinalproject;
 
 public class WhenInfo {//원인 분석 저장때 사용
     String link;
-    int HighorLow;
+    int HighorLow=-1;
     int one,two,three;
 
     public String getLink() {

@@ -36,6 +36,7 @@ public class CheckBlood extends AppCompatActivity {
     Spinner editkind;
     TextView btnDay, btnTime;
     Context context;
+    String key;
 
     SimpleDateFormat dayformat = new SimpleDateFormat("yyyy/MM/dd");
     SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm");
@@ -88,7 +89,9 @@ public class CheckBlood extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 myRef = database.getReference("blood").child(user.getUid());
-                                myRef.push().setValue(blood);
+                                DatabaseReference databaseReference=myRef.push();
+                                databaseReference.setValue(blood);
+                                key=databaseReference.getKey();
                                 wheninfoM(0);
                             }
                         });
@@ -103,10 +106,13 @@ public class CheckBlood extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 myRef = database.getReference("blood").child(user.getUid());
-                                myRef.push().setValue(blood);
+                                DatabaseReference databaseReference=myRef.push();
+                                databaseReference.setValue(blood);
+                                key=databaseReference.getKey();
                                 wheninfoM(1);
                             }
                         });
+                        dialog.setCancelable(false);
                         AlertDialog alertDialog = dialog.create();
                         alertDialog.show();
                     } else if (blood.getBloodSugar() >= 200) {
@@ -117,7 +123,9 @@ public class CheckBlood extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 myRef = database.getReference("blood").child(user.getUid());
-                                myRef.push().setValue(blood);
+                                DatabaseReference databaseReference=myRef.push();
+                                databaseReference.setValue(blood);
+                                key=databaseReference.getKey();
                                 wheninfoM(1);
                             }
                         });
@@ -125,26 +133,19 @@ public class CheckBlood extends AppCompatActivity {
                         alertDialog.show();
                     } else {//75~200
                         myRef = database.getReference("blood").child(user.getUid());
-                        myRef.push().setValue(blood);
+                        DatabaseReference databaseReference=myRef.push();
+                        databaseReference.setValue(blood);
+                        key=databaseReference.getKey();
+                        key=myRef.getKey();
                         if (blood.getKind().equals("취침전") && blood.getBloodSugar() >= 150) {
                             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                             dialog.setTitle("조금 고혈당입니다").setMessage("저녁간식을 줄이거나 의사와 상담해보세요");// 약값 받는거 사용해서 있으면 먹으라고함 수정
-                            dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    finish();
-                                }
-                            });
+                            dialog.setPositiveButton("확인", (dialog12, which) -> finish());
                             dialog.show();
                         } else if (blood.getKind().equals("아침 식전(8시간 이상 공복)") && blood.getBloodSugar() >= 150) {
                             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                             dialog.setTitle("조금 고혈당입니다").setMessage("저녁간식을 줄이거나 의사와 상담해보세요");// 약값 받는거 사용해서 있으면 먹으라고함 수정
-                            dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    finish();
-                                }
-                            });
+                            dialog.setPositiveButton("확인", (dialog1, which) -> finish());
                             dialog.show();
                         } else {
                             finish();
@@ -215,8 +216,8 @@ public class CheckBlood extends AppCompatActivity {
                     if (whenLowbool[2]) {
                         whenInfo.setThree(1);
                     }
-                    myRef = database.getReference("find").child(user.getUid());
-                    myRef.push().setValue(whenInfo);
+                    myRef = database.getReference("find").child(user.getUid()).child(key);
+                    myRef.setValue(whenInfo);
                     finish();
                 }
             }).show();
@@ -240,8 +241,8 @@ public class CheckBlood extends AppCompatActivity {
                     if (whenLowbool[2]) {
                         whenInfo.setThree(1);
                     }
-                    myRef = database.getReference("find").child(user.getUid());
-                    myRef.push().setValue(whenInfo);
+                    myRef = database.getReference("find").child(user.getUid()).child(key);
+                    myRef.setValue(whenInfo);
                     finish();
                 }
             }).show();
