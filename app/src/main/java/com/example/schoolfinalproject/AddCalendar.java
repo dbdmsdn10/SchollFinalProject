@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -306,10 +307,10 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
 
         //if(mCredential.getSelectedAccount() == null)
         //{
-            // 사용자에게 선택하라는 메시지를 표시하지 않고 수동으로 accountName을 설정하는 방법
-            //mCredential.setSelectedAccountName(accountName) 문제를 해결하는데 사용
-            //mCredential.setSelectedAccount(new Account(getPreferences(Context.MODE_PRIVATE)
-            //       .getString(PREF_ACCOUNT_NAME, null), "com.example.schoolfinalproject"));
+        //    // 사용자에게 선택하라는 메시지를 표시하지 않고 수동으로 accountName을 설정하는 방법
+        //    //mCredential.setSelectedAccountName(accountName) 문제를 해결하는데 사용
+        //    mCredential.setSelectedAccount(new Account(getPreferences(Context.MODE_PRIVATE)
+        //           .getString(PREF_ACCOUNT_NAME, null), "com.example.schoolfinalproject"));
         //}
 
         //사용법 블로그 참고 추가3 끝
@@ -362,25 +363,49 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
                     commit.setEnabled(false);
                     title = calendar_title.getText().toString();
                     content = calendar_content.getText().toString();
-                    startDate = startDateSetText.getText().toString();
-                    endDate = endDateSetText.getText().toString();
 
-                    if(startDate.equals("시작 날짜")||endDate.equals("종료 날짜"))
+                    if(startDateSetText.getText().toString().equals("시작 날짜")
+                            ||endDateSetText.getText().toString().equals("종료 날짜"))
                     {
-                        startDate = String.format("%d-%02d-%02d",Syear,Smonth,Sday);
-                        endDate = String.format("%d-%02d-%02d",Syear,Smonth,Sday);
+                        startDateSetText.setText(String.format("%d-%02d-%02d",Syear,Smonth,Sday));
+                        endDateSetText.setText(String.format("%d-%02d-%02d",Syear,Smonth,Sday));
+                        startDate = startDateSetText.getText().toString();
+                        endDate = endDateSetText.getText().toString();
+                    }
+                    else if(swapDate())
+                    {
+                        endDate = startDateSetText.getText().toString();
+                        startDate = endDateSetText.getText().toString();
+                    }
+                    else
+                    {
+                        startDate = startDateSetText.getText().toString();
+                        endDate = endDateSetText.getText().toString();
                     }
 
-                    String startEditTime = startTimeSetText.getText().toString();
+                    String startEditTime;
                     //String startEdit[] = startEditTime.split(":");
 
-                    String endEditTime = endTimeSetText.getText().toString();
+                    String endEditTime;
                     //String endEdit[] = endEditTime.split(";");
 
-                    if(startEditTime.equals("시작 시간 설정")||endEditTime.equals("종료 시간 설정"))
+                    if(startTimeSetText.getText().toString().equals("시작 시간 설정")
+                            ||endTimeSetText.getText().toString().equals("종료 시간 설정"))
                     {
-                        startEditTime = String.format("%02d:%02d",Shour, Sminute);
-                        endEditTime = String.format("%02d:%02d",Shour, Sminute);
+                        startTimeSetText.setText(String.format("%02d:%02d",Shour, Sminute));
+                        endTimeSetText.setText(String.format("%02d:%02d",Shour, Sminute));
+                        startEditTime = startTimeSetText.getText().toString();
+                        endEditTime = endTimeSetText.getText().toString();
+                    }
+                    else if(swapTime())
+                    {
+                        endEditTime = startTimeSetText.getText().toString();
+                        startEditTime = endTimeSetText.getText().toString();
+                    }
+                    else
+                    {
+                        startEditTime = startTimeSetText.getText().toString();
+                        endEditTime = endTimeSetText.getText().toString();
                     }
 
                     TotelstartDateTime = startDate.concat('T'+startEditTime+":00+09:00");
@@ -391,8 +416,15 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
                     getResultsFromApi();
                     commit.setEnabled(true);
                     Toast.makeText(getApplicationContext(),"추가되었습니다", Toast.LENGTH_SHORT).show();
-                    finish();
 
+                    /*
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+                    },2000);
+*/
                     break;
                 case R.id.cancel:
                     finish();
@@ -457,6 +489,106 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
              */
         }
     };
+
+    boolean swapDate()
+    {
+        String divide1[] = startDateSetText.getText().toString().split("-");
+        String divide2[] = endDateSetText.getText().toString().split("-");
+        int[] startDate = new int[3];
+        int[] endDate = new int[3];
+
+        for( int i = 0; i < divide1.length; i++)
+        {
+            if(i == 0)
+            {
+                startDate[0] = Integer.parseInt(divide1[0]);
+            }
+            else if(i == 1)
+            {
+                startDate[1] = Integer.parseInt(divide1[1]);
+            }
+            else if(i == 2)
+            {
+                startDate[2] = Integer.parseInt(divide1[2]);
+            }
+        }
+
+        for( int i = 0; i < divide2.length; i++)
+        {
+            if(i == 0)
+            {
+                endDate[0] = Integer.parseInt(divide2[0]);
+            }
+            else if(i == 1)
+            {
+                endDate[1] = Integer.parseInt(divide2[1]);
+            }
+            else if(i == 2)
+            {
+                endDate[2] = Integer.parseInt(divide2[2]);
+            }
+        }
+
+        if(startDate[0] > endDate[0])//시작 년도 보다 종료 년도가 더 작은 경우
+        {
+            return true;
+        }
+        else if(startDate[1] > endDate[1])//시작 월 보다 종료 월이 더 작은 경우
+        {
+            return true;
+        }
+        else if(startDate[2] > endDate[2]) //시작 일 보다 종료 일이 더 작은 경우
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    boolean swapTime()
+    {
+        String divide1[] = startTimeSetText.getText().toString().split(":");
+        String divide2[] = endTimeSetText.getText().toString().split(":");
+        int[] startTime = new int[2];
+        int[] endTime = new int[2];
+
+        for( int i = 0; i < divide1.length; i++)
+        {
+            if(i == 0)
+            {
+                startTime[0] = Integer.parseInt(divide1[0]);
+            }
+            else if(i == 1)
+            {
+                startTime[1] = Integer.parseInt(divide1[1]);
+            }
+
+        }
+
+        for( int i = 0; i < divide2.length; i++)
+        {
+            if(i == 0)
+            {
+                endTime[0] = Integer.parseInt(divide2[0]);
+            }
+            else if(i == 1)
+            {
+                endTime[1] = Integer.parseInt(divide2[1]);
+            }
+        }
+
+        if(startTime[0] > endTime[0])//시작 시간 보다 종료 시간이 더 작은 경우
+        {
+            return true;
+        }
+        else if(startTime[1] > endTime[1])//시작 분 보다 종료 분이 더 작은 경우
+        {
+            return true;
+        }
+
+        return false;
+    }
 /*
     public void InitializeListener()
     {
@@ -596,6 +728,9 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
 
                 // 선택된 구글 계정 이름으로 설정한다.
                 mCredential.setSelectedAccountName(accountName);
+
+                mCredential.setSelectedAccount(new Account(getPreferences(Context.MODE_PRIVATE)
+                        .getString(PREF_ACCOUNT_NAME, null), "com.example.schoolfinalproject"));
 
                 System.out.println(accountName);
 
@@ -799,7 +934,6 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
             //mResultText.setText("");
             System.out.println(("데이터 가져오는 중..."));
         }
-
 
         /*
          * 백그라운드에서 Google Calendar API 호출 처리
@@ -1014,6 +1148,9 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
                     .setTimeZone("Asia/Seoul");
             event.setEnd(end);
 
+
+
+
             //String[] recurrence = new String[]{"RRULE:FREQ=DAILY;COUNT=2"};
             //event.setRecurrence(Arrays.asList(recurrence));
 
@@ -1032,4 +1169,15 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
     }
 
     //사용법 블로그 참고 추가4 끝
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+
+        if(mProgress != null && mProgress.isShowing())
+        {
+            mProgress.dismiss();
+        }
+    }
 }

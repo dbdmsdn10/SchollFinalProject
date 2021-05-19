@@ -232,12 +232,12 @@ public class MainCalendar extends AppCompatActivity implements EasyPermissions.P
         ).setBackOff(new ExponentialBackOff()); // I/O 예외 상황을 대비해서 백오프 정책 사용
 
 
-        //if(mCredential.getSelectedAccountName() == null)
-       // {
+        //if(mCredential.getSelectedAccount() == null)
+        //{
         // 사용자에게 선택하라는 메시지를 표시하지 않고 수동으로 accountName을 설정하는 방법
         //mCredential.setSelectedAccountName(accountName) 문제를 해결하는데 사용
-        mCredential.setSelectedAccount(new Account(getPreferences(Context.MODE_PRIVATE)
-               .getString(PREF_ACCOUNT_NAME, null), "com.example.schoolfinalproject"));
+        //    mCredential.setSelectedAccount(new Account(getPreferences(Context.MODE_PRIVATE)
+        //      .getString(PREF_ACCOUNT_NAME, null), "com.example.schoolfinalproject"));
         //}
 
         //사용법 블로그 참고 추가3 끝
@@ -246,10 +246,16 @@ public class MainCalendar extends AppCompatActivity implements EasyPermissions.P
         mID = 3;        //이벤트 가져오기
         getResultsFromApi();//
 
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus)
+    {
+        super.onWindowFocusChanged(hasFocus);
+
         //어뎁터 추가 및 리스트뷰 사용
         eventAdapter = new EventAdapter(arrayEvent, getApplicationContext());
         eventList.setAdapter(eventAdapter);
-
     }
 
     public View.OnClickListener click = new View.OnClickListener()
@@ -302,16 +308,17 @@ public class MainCalendar extends AppCompatActivity implements EasyPermissions.P
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
         {
+            System.out.println("메소드 getView 실행 : "+position);
             convertView = _inflater.inflate(R.layout.list_item, parent, false);
             EventInfo info=arrayEvent.get(position);
             TextView textView=convertView.findViewById(R.id.txttext);
-            textView.setText("일정 제목: "+info.getEventTitle()+"\n일정 내용: "+info.getEventContent()+"\n시작날짜:  "+info.getEventStart()+"\n 종료날짜: "+info.getEventEnd());
+            textView.setText("일정 제목: "+info.getEventTitle()+"\n" +
+                    "일정 내용: "+info.getEventContent()+"\n" +
+                    "시작날짜:  "+info.getEventStart()+"\n " +
+                    "종료날짜: "+info.getEventEnd());
             return convertView;
         }
     }
-
-
-
 
 
     //사용법 블로그 참고 추가4 시작
@@ -426,6 +433,9 @@ public class MainCalendar extends AppCompatActivity implements EasyPermissions.P
 
                 // 선택된 구글 계정 이름으로 설정한다.
                 mCredential.setSelectedAccountName(accountName);
+
+                mCredential.setSelectedAccount(new Account(getPreferences(Context.MODE_PRIVATE)
+                        .getString(PREF_ACCOUNT_NAME, null), "com.example.schoolfinalproject"));
 
                 System.out.println(accountName);
 
@@ -605,7 +615,6 @@ public class MainCalendar extends AppCompatActivity implements EasyPermissions.P
         List<String> eventStrings = new ArrayList<String>();
 
 
-
         public MakeRequestTask(MainCalendar activity, GoogleAccountCredential credential) {
 
             System.out.println("MakeRequestTask 실행");
@@ -707,8 +716,8 @@ public class MainCalendar extends AppCompatActivity implements EasyPermissions.P
                 System.out.println("일정 내용: "+event.getDescription());
                 System.out.println("일정 시작: "+event.getStart().toString());
                 System.out.println("일정 종료: "+event.getEnd().toString());
-
                 //event.getSummary()일정 제목
+
                 //event.getLocation()일정 장소
                 //event.getDescription()일정 내용
                 //event.getStart()일정 시작 날짜 및 시간
@@ -718,8 +727,6 @@ public class MainCalendar extends AppCompatActivity implements EasyPermissions.P
                 eventInfo.setEventContent(event.getDescription());
                 eventInfo.setEventStart(event.getStart().toString());
                 eventInfo.setEventEnd(event.getEnd().toString());
-
-
 
 
                 arrayEvent.add(eventInfo);
@@ -751,7 +758,6 @@ public class MainCalendar extends AppCompatActivity implements EasyPermissions.P
 
             // 캘린더의 제목 설정
             calendar.setSummary("혈당 관리 일정");
-
 
             // 캘린더의 시간대 설정
             calendar.setTimeZone("Asia/Seoul");
@@ -820,7 +826,15 @@ public class MainCalendar extends AppCompatActivity implements EasyPermissions.P
 
     //사용법 블로그 참고 추가4 끝
 
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
 
-
+        if(mProgress != null && mProgress.isShowing())
+        {
+            mProgress.dismiss();
+        }
+    }
 
 }
