@@ -1,8 +1,10 @@
 package com.example.schoolfinalproject;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -46,13 +48,24 @@ public class RingtonePlayingService extends Service {
                             NotificationManager.IMPORTANCE_DEFAULT);
 
                     ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
+                    Intent intent1=new Intent(this,CheckBlood.class);
+                    if(getState.equals("위급알람")){
+                        intent1.putExtra("위급알람","위급알람");
+                    }
+                    PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent1,0);
 
-                    Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                  Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                             .setContentTitle(time)
-                            .setContentText(time)
-                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentText("혈당체크화면에 들어가면 알람이 꺼집니다")
+                            .setSmallIcon(R.mipmap.notificationicon)
+                            .setContentIntent(pendingIntent)
 //                    .setContent(Alarm)
                             .build();
+
+//                    NotificationCompat.Builder builder=new NotificationCompat.Builder(this,"default");
+////                    builder.setSmallIcon()
+//                    builder.setContentTitle(time);
+//                    builder.setContentText(time);
 
                     startForeground(1, notification);
 
