@@ -3,9 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background">
 
     <EditText
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:id="@+id/id"
@@ -16,16 +20,21 @@
         android:layout_centerHorizontal="true"/>
 
     <EditText
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:id="@+id/password"
-        android:hint="password"
+        android:hint="Password"
         android:inputType="textPassword"
         android:layout_below="@+id/id"
         android:layout_alignStart="@+id/id"/>
 
     <CheckBox
-        android:text="자동로그인"
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
+        android:text="자동 로그인"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/password"
@@ -34,6 +43,9 @@
         android:id="@+id/autoLoginCheck"/>
 
     <Button
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/login_btn1"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:id="@+id/loginButton"
@@ -44,6 +56,9 @@
         android:onClick="doit"/>
 
     <Button
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/login_btn1"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:id="@+id/register"

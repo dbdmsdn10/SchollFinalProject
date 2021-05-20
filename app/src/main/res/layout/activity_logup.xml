@@ -3,9 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background">
 
     <EditText
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
         android:id="@+id/et_id"
         android:layout_width="200dp"
         android:layout_height="45dp"
@@ -18,6 +22,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
         android:id="@+id/et_pass"
         android:layout_width="200dp"
         android:layout_height="45dp"
@@ -29,6 +36,9 @@
         app:layout_constraintStart_toStartOf="@+id/et_id"
         app:layout_constraintTop_toBottomOf="@+id/et_id" />
     <EditText
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
         android:id="@+id/et_passck"
         android:layout_width="200dp"
         android:layout_height="45dp"
@@ -41,6 +51,9 @@
         app:layout_constraintTop_toBottomOf="@+id/et_pass" />
 
     <EditText
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
         android:id="@+id/et_name"
         android:layout_width="200dp"
         android:layout_height="45dp"
@@ -62,34 +75,41 @@
         android:orientation="horizontal"
         >
 
-    <RadioButton
-        android:id="@+id/et_age"
-        android:layout_width="100dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="30dp"
-        android:ems="10"
-        android:hint="여자"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/et_name"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/et_name"
-        app:layout_constraintTop_toBottomOf="@+id/et_name" />
+        <RadioButton
+            android:fontFamily="@font/fontshape"
+            android:textColorHint="#FFFFFF"
+            android:id="@+id/et_age"
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="30dp"
+            android:ems="10"
+            android:hint="여자"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/et_name"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/et_name"
+            app:layout_constraintTop_toBottomOf="@+id/et_name" />
 
-    <RadioButton
-        android:id="@+id/et_age2"
-        android:layout_width="100dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="30dp"
-        android:ems="10"
-        android:hint="남자"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/et_name"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/et_name"
-        app:layout_constraintTop_toBottomOf="@+id/et_name" />
+        <RadioButton
+            android:fontFamily="@font/fontshape"
+            android:textColorHint="#FFFFFF"
+            android:id="@+id/et_age2"
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="30dp"
+            android:ems="10"
+            android:hint="남자"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/et_name"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/et_name"
+            app:layout_constraintTop_toBottomOf="@+id/et_name" />
     </RadioGroup>
 
     <Button
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/login_btn1"
         android:id="@+id/btn_register"
         android:layout_width="200dp"
         android:layout_height="45dp"
@@ -104,6 +124,9 @@
         app:layout_constraintTop_toBottomOf="@+id/radio"
         android:onClick="doit"/>
     <Button
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/login_btn1"
         android:id="@+id/btn_cancle"
         android:layout_width="200dp"
         android:layout_height="45dp"
@@ -118,15 +141,4 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_register"
         android:onClick="doit"/>
 
-<!--    <Button-->
-<!--        android:id="@+id/validateButton"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="45dp"-->
-<!--        android:layout_marginTop="148dp"-->
-<!--        android:text="중복확인"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.058"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/et_id"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        android:onClick="doit"/>-->
 </androidx.constraintlayout.widget.ConstraintLayout>

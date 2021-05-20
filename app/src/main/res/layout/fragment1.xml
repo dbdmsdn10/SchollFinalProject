@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/home_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,17 +14,26 @@
         android:orientation="horizontal">
 
         <Button
+            android:fontFamily="@font/fontshape"
+            android:background="@drawable/home_btn1"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
             android:id="@+id/btnstopwatch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="스톱워치"
-            />
+            android:onClick="doit"
+            android:text="스톱워치" />
 
         <Button
+            android:fontFamily="@font/fontshape"
+            android:background="@drawable/home_btn2"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
             android:id="@+id/btnCheckBlood"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="doit"
             android:text="혈당측정" />
     </LinearLayout>
 
@@ -34,16 +44,26 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnshowlist"
+            android:fontFamily="@font/fontshape"
+            android:background="@drawable/home_btn3"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:id="@+id/showlist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="혈당리스트보기" />
+            android:onClick="doit"
+            android:text="리스트보기" />
 
         <Button
+            android:fontFamily="@font/fontshape"
+            android:background="@drawable/home_btn4"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
             android:id="@+id/btngraph"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="doit"
             android:text="그래프 보기" />
     </LinearLayout>
 
@@ -55,37 +75,27 @@
         android:orientation="horizontal">
 
         <Button
+            android:fontFamily="@font/fontshape"
+            android:background="@drawable/home_btn5"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
             android:id="@+id/btnCalendar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:onClick="doit"
             android:text="일정 보기" />
 
         <Button
+            android:fontFamily="@font/fontshape"
+            android:background="@drawable/home_btn6"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
             android:id="@+id/btnalarm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="doit"
             android:text="주기알람" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnmeal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="식사시간 설정" />
-
-        <Button
-            android:id="@+id/btndrug"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="먹는약 설정" />
     </LinearLayout>
 
 </LinearLayout>
