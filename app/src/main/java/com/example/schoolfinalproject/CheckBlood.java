@@ -1,18 +1,14 @@
 package com.example.schoolfinalproject;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -70,17 +66,6 @@ public class CheckBlood extends AppCompatActivity {
         btnTime.setText(txttime);
         context = this;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        Intent my_intent = new Intent(this.context, Alarm_Reciver.class);
-        AlarmManager alarm_manager2 = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        my_intent.putExtra("state", "alarm off");
-        int i = 0;
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(CheckBlood.this, i, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        alarm_manager2.cancel(pendingIntent);
-        // 알람취소
-        sendBroadcast(my_intent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
