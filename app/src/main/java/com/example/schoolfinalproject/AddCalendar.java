@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -85,15 +86,12 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
 
 
     Button commit;
-    Button cancel;
 
 
     String title;
     String content;
     String startDate;
     String endDate;
-    String startTime;
-    String endTime;
 
     //DateTime startDate;
     //DateTime EndDate;
@@ -150,6 +148,7 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_calendar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //일정 제목과 내용을 받기 위해 사용
         calendar_title = (EditText)findViewById(R.id.calendarTitle);
@@ -165,7 +164,6 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
 
         //버튼 설정
         commit = (Button)findViewById(R.id.commit);
-        cancel = (Button)findViewById(R.id.cancel);
 
 
         //현재 시간 값 받아오기
@@ -226,94 +224,15 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
         endTimeSetText.setOnClickListener(click);
 
         commit.setOnClickListener(click);
-        cancel.setOnClickListener(click);
 
-
-
-        //사용법 블로그 참고 추가3 시작
-
-        //mAddCalendarButton = (Button) findViewById(R.id.button_main_add_calendar);
-        //mAddEventButton = (Button) findViewById(R.id.button_main_add_event);
-        //mGetEventButton = (Button) findViewById(R.id.button_main_get_event);
-
-        //mStatusText = (TextView) findViewById(R.id.textview_main_status);
-        //mResultText = (TextView) findViewById(R.id.textview_main_result);
-
-
-
-        /**
-         * 버튼 클릭으로 동작 테스트
-         */
-        /*
-        mAddCalendarButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAddCalendarButton.setEnabled(false);
-                mStatusText.setText("");
-                mID = 1;           //캘린더 생성
-                getResultsFromApi();
-                mAddCalendarButton.setEnabled(true);
-            }
-        });
-        */
-
-        /*
-        mAddEventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAddEventButton.setEnabled(false);
-                //mStatusText.setText("");
-                mID = 2;        //이벤트 생성
-                getResultsFromApi();
-                mAddEventButton.setEnabled(true);
-            }
-        });
-         */
-
-        /*
-        mGetEventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mGetEventButton.setEnabled(false);
-                mStatusText.setText("");
-                mID = 3;        //이벤트 가져오기
-                getResultsFromApi();
-                mGetEventButton.setEnabled(true);
-            }
-        });
-        */
-
-        // Google Calendar API의 호출 결과를 표시하는 TextView를 준비
-        //mResultText.setVerticalScrollBarEnabled(true);
-        //mResultText.setMovementMethod(new ScrollingMovementMethod());
-
-        //mStatusText.setVerticalScrollBarEnabled(true);
-        //mStatusText.setMovementMethod(new ScrollingMovementMethod());
-        //mStatusText.setText("버튼을 눌러 테스트를 진행하세요.");
-
-
-        // Google Calendar API 호출중에 표시되는 ProgressDialog
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Google Calendar API 호출 중입니다.");
 
 
-        // Google Calendar API 사용하기 위해 필요한 인증 초기화( 자격 증명 credentials, 서비스 객체 )
-        // OAuth 2.0를 사용하여 구글 계정 선택 및 인증하기 위한 준비
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(),
                 Arrays.asList(SCOPES)
         ).setBackOff(new ExponentialBackOff()); // I/O 예외 상황을 대비해서 백오프 정책 사용
-
-
-        //if(mCredential.getSelectedAccount() == null)
-        //{
-        //    // 사용자에게 선택하라는 메시지를 표시하지 않고 수동으로 accountName을 설정하는 방법
-        //    //mCredential.setSelectedAccountName(accountName) 문제를 해결하는데 사용
-        //    mCredential.setSelectedAccount(new Account(getPreferences(Context.MODE_PRIVATE)
-        //           .getString(PREF_ACCOUNT_NAME, null), "com.example.schoolfinalproject"));
-        //}
-
-        //사용법 블로그 참고 추가3 끝
 
     }
 
@@ -332,9 +251,6 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
 
                     break;
                 case R.id.startDateSettingText://dateSetting:
-                    //OnClickHandler(dateSetText);
-                    //AddCalendar.this.InitializeView();
-                    //AddCalendar.this.InitializeListener();
 
                     DatePickerDialog startDateDialog = new DatePickerDialog(AddCalendar.this, callbackStart_date, Syear, Smonth-1, Sday);
                     startDateDialog.show();
@@ -425,9 +341,6 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
                         }
                     },2000);
 */
-                    break;
-                case R.id.cancel:
-                    finish();
                     break;
             }
         }
@@ -958,11 +871,6 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
 
                     return addEvent();
                 }
-                else if (mID == 3) {
-
-                    return getEvent();
-                }
-
 
             } catch (Exception e) {
                 mLastError = e;
@@ -971,54 +879,6 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
             }
 
             return null;
-        }
-
-
-        /*
-         * CalendarTitle 이름의 캘린더에서 10개의 이벤트를 가져와 리턴
-         */
-        private String getEvent() throws IOException {
-
-
-            DateTime now = new DateTime(System.currentTimeMillis());
-
-            String calendarID = getCalendarID("혈당 관리 일정");
-            if ( calendarID == null ){
-
-                return "캘린더를 먼저 생성하세요.";
-            }
-
-
-            Events events = mService.events().list(calendarID)//"primary")
-                    .setMaxResults(10)
-                    //.setTimeMin(now)
-                    .setOrderBy("startTime")
-                    .setSingleEvents(true)
-                    .execute();
-            List<Event> items = events.getItems();
-
-
-            for (Event event : items) {
-
-                DateTime start = event.getStart().getDateTime();
-                if (start == null) {
-
-                    // 모든 이벤트가 시작 시간을 갖고 있지는 않다. 그런 경우 시작 날짜만 사용
-                    start = event.getStart().getDate();
-                }
-
-                //event.getSummary()일정 제목
-                //event.getLocation()일정 장소
-                //event.getDescription()일정 내용
-                //event.getStart()일정 시작 날짜 및 시간
-                //event.getEnd()일정 종료 날짜 및 시간
-                //위 내용을 가져와 표시한다
-
-                eventStrings.add(String.format("%s \n (%s)", event.getSummary(), start));
-            }
-
-
-            return eventStrings.size() + "개의 데이터를 가져왔습니다.";
         }
 
         /*
@@ -1165,6 +1025,7 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
 
             try {
                 event = mService.events().insert(calendarID, event).execute();
+                finish();
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e("Exception", "Exception : " + e.toString());
@@ -1187,5 +1048,14 @@ public class AddCalendar extends AppCompatActivity implements EasyPermissions.Pe
         {
             mProgress.dismiss();
         }
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

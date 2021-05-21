@@ -22,6 +22,7 @@ public class RingtonePlayingService extends Service {
     int startId;
     boolean isRunning;
 
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -38,6 +39,8 @@ public class RingtonePlayingService extends Service {
 
         String getState = intent.getExtras().getString("state");
         String time = intent.getExtras().getString("time");
+        String calendar = intent.getExtras().getString("Calendar");
+
         assert getState != null;
         switch (getState) {
             case "alarm on":
@@ -66,9 +69,7 @@ public class RingtonePlayingService extends Service {
 ////                    builder.setSmallIcon()
 //                    builder.setContentTitle(time);
 //                    builder.setContentText(time);
-
                     startForeground(1, notification);
-
                 }
                 startId = 1;
                 break;
@@ -82,7 +83,7 @@ public class RingtonePlayingService extends Service {
         }
 
         // 알람음 재생 X , 알람음 시작 클릭
-        if(!this.isRunning && startId == 1) {
+        if(!this.isRunning && startId == 1 && !(calendar.equals("nonpass"))) {
 
             mediaPlayer = MediaPlayer.create(this,R.raw.music);
             mediaPlayer.start();

@@ -2,6 +2,7 @@ package com.example.schoolfinalproject;
 
 public class EventInfo
 {
+    String id;
     String eventTitle;
     String eventContent;
     String eventStart;
@@ -47,5 +48,11 @@ public class EventInfo
         return this.eventEnd;
     }
 
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 }

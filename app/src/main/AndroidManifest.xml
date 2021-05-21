@@ -18,7 +18,7 @@
         
 
         <activity android:name=".DrugAlarm"></activity>
-        <activity android:name=".EditBlood"></activity>
+        <activity android:name=".EditCalendar"></activity>
         <activity android:name=".MealAlarm" />
         <activity android:name=".CycleAlarm" />
         <activity android:name=".GraphScreen" />
@@ -36,7 +36,6 @@
         <activity android:name=".MainActivity2" /> <!-- 김무현 일정 관련 추가 -->
         <activity android:name=".MainCalendar" />
         <activity android:name=".AddCalendar" />
-        <activity android:name=".EditCalendar" />
         <activity android:name=".Excercise"/>
         <activity android:name=".Pedometer"/>
         <activity android:name=".StopWatchActivity"/>

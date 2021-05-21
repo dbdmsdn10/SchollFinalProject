@@ -6,16 +6,17 @@
     >
 
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical" >
 
             <CalendarView
+                android:id="@+id/calendarContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp" />
@@ -33,24 +34,18 @@
                     android:layout_marginBottom="5dp"
                     android:text="일정 추가" />
 
-                <Button
-                    android:id="@+id/btnEditSchedule"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:text="일정 수정" />
 
             </LinearLayout>
 
             <ListView
                 android:id="@+id/eventList"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent"/>
 
 
 
         </LinearLayout>
-    </ScrollView>
+<!--    </ScrollView>-->
 
     <!--
         <ScrollView
