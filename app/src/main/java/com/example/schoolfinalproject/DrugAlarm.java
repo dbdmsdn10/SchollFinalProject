@@ -109,6 +109,9 @@ public class DrugAlarm extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 alarmInfo = (AlarmInfo) snapshot.getValue(AlarmInfo.class);
                 name.setSelection(alarmInfo.getDrugname());
+                if(alarmInfo.getDrugresult()==-1){
+                    name.setSelection(0);
+                }
                 if (alarmInfo.getDrugname() == 1) {
                     time.setVisibility(View.VISIBLE);
                     System.out.println("drug값은"+alarmInfo.getDrug());

@@ -25,7 +25,7 @@ import java.io.InputStream;
 
 public class Logup extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    EditText id_Login_edit, pass_Login_edit,et_passck,et_pass,et_name;
+    EditText id_Login_edit, pass_Login_edit,et_passck,et_pass,et_name,NOK;
     FirebaseDatabase database;
     DatabaseReference myRef;
     RadioButton male,female;
@@ -43,6 +43,7 @@ public class Logup extends AppCompatActivity {
         female=findViewById(R.id.et_age);
         male=findViewById(R.id.et_age2);
         et_name=findViewById(R.id.et_name);
+        NOK=findViewById(R.id.NOK);
 
         database = FirebaseDatabase.getInstance();
 
@@ -55,7 +56,7 @@ public class Logup extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(et_pass.getText().toString().equals(et_passck.getText().toString())){
-                    et_passck.setBackgroundColor(Color.WHITE);
+                    et_passck.setBackgroundColor(00000000);
                     passbool=true;
                 }else{
                     et_passck.setBackgroundColor(Color.RED);
@@ -78,7 +79,7 @@ public class Logup extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(et_pass.getText().toString().equals(et_passck.getText().toString())){
-                    et_passck.setBackgroundColor(Color.WHITE);
+                    et_passck.setBackgroundColor(00000000);
                     passbool=true;
                 }else{
                     et_passck.setBackgroundColor(Color.RED);
@@ -149,6 +150,7 @@ public class Logup extends AppCompatActivity {
                         }else{
                             mypageInfo.setGender("F");
                         }
+                        mypageInfo.setNOK(NOK.getText().toString());
                         myRef=database.getReference("Mypage").child(user.getUid());
                         myRef.push().setValue(mypageInfo);
                         Toast.makeText(getApplicationContext(), "등록 성공", Toast.LENGTH_SHORT).show();

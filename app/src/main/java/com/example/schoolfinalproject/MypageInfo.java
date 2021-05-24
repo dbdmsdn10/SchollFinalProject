@@ -4,6 +4,7 @@ public class MypageInfo {
     String auto;
     String gender;
     String name;
+    String NOK;
 
     public String getAuto() {
         return auto;
@@ -27,5 +28,13 @@ public class MypageInfo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNOK() {
+        return NOK;
+    }
+
+    public void setNOK(String NOK) {
+        this.NOK = NOK;
     }
 }

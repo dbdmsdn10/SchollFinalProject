@@ -105,14 +105,11 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
 
                 break;
-//            case R.id.test:
-//                Intent intent = new Intent(Login.this, Logup.class);
-//                startActivity(intent);
-//                InputStream inputStream = getResources().openRawResource(R.raw.dataoriginal);
-//
-//                Parsing a = new Parsing();
-//                a.Parsing(inputStream);
-//                break;
+            case R.id.test:
+                MainCalendar mainCalendar=new MainCalendar();
+                mainCalendar.onCreate(null);
+                System.out.println(mainCalendar.size()+"획인용");
+                break;
 
             default:
                 break;

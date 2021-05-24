@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.schoolfinalproject">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
@@ -11,10 +14,9 @@
         android:roundIcon="@mipmap/mainicon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SchoolFinalProject">
-        
 
         <activity android:name=".DrugAlarm"></activity>
-        <activity android:name=".EditBlood"></activity>
+        <activity android:name=".EditCalendar"></activity>
         <activity android:name=".MealAlarm" />
         <activity android:name=".CycleAlarm" />
         <activity android:name=".GraphScreen" />
@@ -32,7 +34,6 @@
         <activity android:name=".MainActivity2" /> <!-- 김무현 일정 관련 추가 -->
         <activity android:name=".MainCalendar" />
         <activity android:name=".AddCalendar" />
-        <activity android:name=".EditCalendar" />
         <activity android:name=".Excercise"/>
         <activity android:name=".Pedometer"/>
         <activity android:name=".StopWatchActivity"/>

@@ -4,15 +4,19 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:background="@drawable/alarm_background"
     >
 
     <LinearLayout
+        android:layout_marginTop="110dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginBottom="20dp">
         <TextView
+            android:fontFamily="@font/fontshape"
+            android:textColor="#000000"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="아침시간"
@@ -20,6 +24,8 @@
             />
 
         <TextView
+            android:fontFamily="@font/fontshape"
+            android:textColor="#000000"
             android:id="@+id/edbreakfirst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,6 +42,8 @@
         android:gravity="center"
         android:layout_marginBottom="20dp">
         <TextView
+            android:fontFamily="@font/fontshape"
+            android:textColor="#000000"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="점심시간"
@@ -43,6 +51,8 @@
             />
 
         <TextView
+            android:fontFamily="@font/fontshape"
+            android:textColor="#000000"
             android:id="@+id/edlunch"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -60,17 +70,20 @@
         android:gravity="center"
         android:layout_marginBottom="20dp">
         <TextView
+            android:fontFamily="@font/fontshape"
+            android:textColor="#000000"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="저녁시간"
             android:textSize="20dp"
             />
         <TextView
+            android:fontFamily="@font/fontshape"
+            android:textColor="#000000"
             android:id="@+id/eddinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="HH:MM"
-
             android:layout_marginLeft="20dp"
             android:textSize="20dp"
             android:onClick="doit"
@@ -85,15 +98,26 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
+        android:layout_marginTop="110dp"
         >
 
         <Button
+            android:layout_marginRight="10dp"
+            android:fontFamily="@font/fontshape"
+            android:background="@drawable/alarm_btn1"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp"
             android:id="@+id/btn_mealstart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="적용"
             android:onClick="doit"/>
         <Button
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/fontshape"
+            android:background="@drawable/alarm_btn1"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp"
             android:id="@+id/btn_reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

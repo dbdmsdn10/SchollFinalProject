@@ -46,7 +46,7 @@ public class CycleAlarm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
         Progress progress = new Progress(CycleAlarm.this);
-        this.context = this;
+        this.context = getApplicationContext();
 
         waketime = findViewById(R.id.edwaketime);
         nightTime = findViewById(R.id.ednighttime);
@@ -56,8 +56,6 @@ public class CycleAlarm extends AppCompatActivity {
         my_intent = new Intent(this.context, Alarm_Reciver.class);
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
         FirebaseDatabase database3 = FirebaseDatabase.getInstance();
         DatabaseReference myRef3 = database3.getReference("Alarm/" + user.getUid());
 
@@ -144,24 +142,6 @@ public class CycleAlarm extends AppCompatActivity {
                     alarm();
                     Toast.makeText(CycleAlarm.this, "알람이 설정되었습니다", Toast.LENGTH_SHORT).show();
                 }
-                break;
-            case R.id.btn_finish:
-                Toast.makeText(CycleAlarm.this, "Alarm 종료", Toast.LENGTH_SHORT).show();
-                // 알람매니저 취소
-
-                AlarmManager alarm_manager2 = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-
-                my_intent.putExtra("state", "alarm off");
-                int i = 0;
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(CycleAlarm.this, i, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                ;
-
-
-                alarm_manager2.cancel(pendingIntent);
-                // 알람취소
-                sendBroadcast(my_intent);
-
                 break;
 
             case R.id.edwaketime:

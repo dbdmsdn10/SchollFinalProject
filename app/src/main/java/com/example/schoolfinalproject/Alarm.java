@@ -96,7 +96,9 @@ public class Alarm {
                         String a = "정기 알람 " + hour + "시 " + min + "분";
                         my_intent.putExtra("state", "alarm on");
                         my_intent.putExtra("time", a);
-                        System.out.println(a);
+                        String type="cycle "+hour+":"+min;
+                        my_intent.putExtra("origin2",type);
+                        System.out.println(type);
 
                         // 알람셋팅
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -139,6 +141,8 @@ public class Alarm {
                         String a = "아침 이후 알람 " + times[0] + "시 " + times[1] + "분";
                         my_intent.putExtra("state", "alarm on");
                         my_intent.putExtra("time", a);
+                        String type="breakfirst "+alarmInfo.getBreakfirst();
+                        my_intent.putExtra("origin2",type);
                         System.out.println(a);
 
                         // 알람셋팅
@@ -170,6 +174,8 @@ public class Alarm {
                         String a = "점심 이후 알람 " + times[0] + "시 " + times[1] + "분";
                         my_intent.putExtra("state", "alarm on");
                         my_intent.putExtra("time", a);
+                        String type="lunch "+alarmInfo.getLunch();
+                        my_intent.putExtra("origin2",type);
                         System.out.println(a);
 
                         // 알람셋팅
@@ -201,6 +207,8 @@ public class Alarm {
                         String a = "저녁 이후 알람 " + times[0] + "시 " + times[1] + "분";
                         my_intent.putExtra("state", "alarm on");
                         my_intent.putExtra("time", a);
+                        String type="dinner "+alarmInfo.getDinner();
+                        my_intent.putExtra("origin2", type);
                         System.out.println(a);
 
                         // 알람셋팅
@@ -248,6 +256,7 @@ public class Alarm {
             String a = "개인설정 약 알람 " + hour + "시 " + min + "분";
             my_intent.putExtra("state", "alarm on");
             my_intent.putExtra("time", a);
+            my_intent.putExtra("origin2","drug "+alarmInfo.getDrugresult()+"");
             System.out.println(a);
 
             // 알람셋팅
@@ -276,6 +285,7 @@ public class Alarm {
             String a = "식전30분 약 알람 " + hour + "시 " + min + "분";
             my_intent.putExtra("state", "alarm on");
             my_intent.putExtra("time", a);
+            my_intent.putExtra("origin2","drug "+alarmInfo.getDrugresult()+"");
             System.out.println(a);
 
             // 알람셋팅
@@ -304,6 +314,7 @@ public class Alarm {
             String a = "식전15분 약 알람 " + hour + "시 " + min + "분";
             my_intent.putExtra("state", "alarm on");
             my_intent.putExtra("time", a);
+            my_intent.putExtra("origin2","drug "+alarmInfo.getDrugresult()+"");
             System.out.println(a);
 
             // 알람셋팅
@@ -325,6 +336,7 @@ public class Alarm {
             String a = "식후 약 알람 " + hour + "시 " + min + "분";
             my_intent.putExtra("state", "alarm on");
             my_intent.putExtra("time", a);
+            my_intent.putExtra("origin2","drug "+alarmInfo.getDrugresult()+"");
             System.out.println(a);
 
             // 알람셋팅

@@ -24,12 +24,12 @@ public class Fragment1 extends Fragment {
 
         stopwatch=viewGroup.findViewById(R.id.btnstopwatch);
         CheckBlood=viewGroup.findViewById(R.id.btnCheckBlood);
-        showlist=viewGroup.findViewById(R.id.btnshowlist);
+        showlist=viewGroup.findViewById(R.id.showlist);
         graph=viewGroup.findViewById(R.id.btngraph);
         Calendar=viewGroup.findViewById(R.id.btnCalendar);
         cycle=viewGroup.findViewById(R.id.btnalarm);
-        meal=viewGroup.findViewById(R.id.btnmeal);
-        drug=viewGroup.findViewById(R.id.btndrug);
+//        meal=viewGroup.findViewById(R.id.btnmeal);
+//        drug=viewGroup.findViewById(R.id.btndrug);
 
 
         stopwatch.setOnClickListener(v -> {
@@ -57,14 +57,14 @@ public class Fragment1 extends Fragment {
             Intent intent = new Intent(getActivity(), CycleAlarm.class);
             startActivity(intent);
         });
-        meal.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), MealAlarm.class);
-            startActivity(intent);
-        });
-        drug.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), DrugAlarm.class);
-            startActivity(intent);
-        });
+//        meal.setOnClickListener(v -> {
+//            Intent intent = new Intent(getActivity(), MealAlarm.class);
+//            startActivity(intent);
+//        });
+//        drug.setOnClickListener(v -> {
+//            Intent intent = new Intent(getActivity(), DrugAlarm.class);
+//            startActivity(intent);
+//        });
 
 
         return viewGroup;
