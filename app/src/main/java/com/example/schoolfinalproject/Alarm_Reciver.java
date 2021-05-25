@@ -67,10 +67,10 @@ public class Alarm_Reciver extends BroadcastReceiver {
 
         this.context = context;
         boolean a = true;
+
         // intent로부터 전달받은 string
         String get_yout_string = intent.getExtras().getString("state");
         String time = intent.getExtras().getString("time");
-
 
         String origin2 = intent.getExtras().getString("origin2");
 
@@ -92,65 +92,69 @@ public class Alarm_Reciver extends BroadcastReceiver {
                     if (origin2 == null) {
                         doalarm(time, get_yout_string);
                     } else if (origin[0].equals("cycle")) {
-                        int times[] = new int[6];
-                        String startTime[] = alarmInfo.getStartTime().split(":");
-                        String endTime[] = alarmInfo.getEndTime().split(":");
-                        String cycleTime[] = alarmInfo.getCycleTime().split(":");
-                        times[0] = Integer.parseInt(startTime[0]);
-                        times[1] = Integer.parseInt(startTime[1]);
-                        times[2] = Integer.parseInt(endTime[0]);
-                        times[3] = Integer.parseInt(endTime[1]);
-                        times[4] = Integer.parseInt(cycleTime[0]);
-                        times[5] = Integer.parseInt(cycleTime[1]);
+                        if (alarmInfo.getStartTime() == null) {
 
-                        int taketime = 0;
-                        int cycletimeT = times[4] * 60 + times[5];
-                        if (times[0] == times[2] && times[1] == times[3]) {
-                            taketime = 24 * 60;
                         } else {
-                            if (times[0] > times[2]) {
-                                taketime += ((24 - times[0]) + times[2]) * 60;
-                            } else {
-                                taketime += (times[2] - times[0]) * 60;
-                            }
-                            if (times[1] > times[3]) {
-                                taketime += (60 - times[1]) + times[3] - 60;
-                            } else {
-                                taketime += times[3] - times[1];
-                            }
-                        }//총 크기 재기위한것
+                            int times[] = new int[6];
+                            String startTime[] = alarmInfo.getStartTime().split(":");
+                            String endTime[] = alarmInfo.getEndTime().split(":");
+                            String cycleTime[] = alarmInfo.getCycleTime().split(":");
+                            times[0] = Integer.parseInt(startTime[0]);
+                            times[1] = Integer.parseInt(startTime[1]);
+                            times[2] = Integer.parseInt(endTime[0]);
+                            times[3] = Integer.parseInt(endTime[1]);
+                            times[4] = Integer.parseInt(cycleTime[0]);
+                            times[5] = Integer.parseInt(cycleTime[1]);
 
-                        int timesize = taketime / cycletimeT;
-                        // 알람매니저 설정
-                        int hour = times[0];
-                        int min = times[1];
-                        for (int i = 0; i < timesize; i++) {
-                            min += times[5];
-                            if (min >= 60) {
-                                hour++;
-                                min -= 60;
-                            }
-                            hour += times[4];
-                            if (hour > 24) {
-                                hour -= 24;
-                            }
-                            if (origin[1].equals(hour + ":" + min)) {
-                                System.out.println(alarmInfo.getStartTime()+"\n"+alarmInfo.getEndTime()+"\n"+alarmInfo.getCycleTime());
-                                System.out.println("오리진="+origin[1]);
+                            int taketime = 0;
+                            int cycletimeT = times[4] * 60 + times[5];
+                            if (times[0] == times[2] && times[1] == times[3]) {
+                                taketime = 24 * 60;
+                            } else {
+                                if (times[0] > times[2]) {
+                                    taketime += ((24 - times[0]) + times[2]) * 60;
+                                } else {
+                                    taketime += (times[2] - times[0]) * 60;
+                                }
+                                if (times[1] > times[3]) {
+                                    taketime += (60 - times[1]) + times[3] - 60;
+                                } else {
+                                    taketime += times[3] - times[1];
+                                }
+                            }//총 크기 재기위한것
 
-                                System.out.println("시간="+hour + ":" + min);
-                                doalarm(time, get_yout_string);
+                            int timesize = taketime / cycletimeT;
+                            // 알람매니저 설정
+                            int hour = times[0];
+                            int min = times[1];
+                            for (int i = 0; i < timesize; i++) {
+                                min += times[5];
+                                if (min >= 60) {
+                                    hour++;
+                                    min -= 60;
+                                }
+                                hour += times[4];
+                                if (hour > 24) {
+                                    hour -= 24;
+                                }
+                                if (origin[1].equals(hour + ":" + min)) {
+                                    System.out.println(alarmInfo.getStartTime() + "\n" + alarmInfo.getEndTime() + "\n" + alarmInfo.getCycleTime());
+                                    System.out.println("오리진=" + origin[1]);
+
+                                    System.out.println("시간=" + hour + ":" + min);
+                                    doalarm(time, get_yout_string);
+                                }
                             }
                         }
                     } else if (origin[0].equals("breakfirst")) {
-                        if (origin[1].equals(alarmInfo.getBreakfirst())) {
+                        if (alarmInfo.getBreakfirst() != null && origin[1].equals(alarmInfo.getBreakfirst())) {
                             doalarm(time, get_yout_string);
                         }
                     } else if (origin[0].equals("lunch")) {
-                        if (origin[1].equals(alarmInfo.getLunch())) {
+                        if (alarmInfo.getLunch() != null && origin[1].equals(alarmInfo.getLunch())) {
                             doalarm(time, get_yout_string);
                         }
-                    } else if (origin[0].equals("dinner")) {
+                    } else if (alarmInfo.getDinner() != null && origin[0].equals("dinner")) {
                         if (origin[1].equals(alarmInfo.getDinner())) {
                             doalarm(time, get_yout_string);
                         }
@@ -215,22 +219,21 @@ public class Alarm_Reciver extends BroadcastReceiver {
 
                     mCredential.setSelectedAccount(new Account(context.getSharedPreferences("MainCalendar", Context.MODE_PRIVATE)
                             .getString(PREF_ACCOUNT_NAME, null), "com.example.schoolfinalproject"));
-                    mID=3;
-                    getResultsFromApi();
+
                 } else {
                     System.out.println("계정이없다");
                 }
+
                 // GET_ACCOUNTS 권한을 가지고 있지 않다면
             }
-        }catch (Exception e){
-            System.out.println(e.toString());
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                this.context.startForegroundService(service_intent);
-            } else {
-                this.context.startService(service_intent);
-            }
+            mID = 3;
+            getResultsFromApi();
+        } catch (Exception e) {
+            mID = 3;
+            getResultsFromApi();
         }
     }
+
     private String getResultsFromApi() {
         new MakeRequestTask(this, mCredential).execute();
 
@@ -272,13 +275,13 @@ public class Alarm_Reciver extends BroadcastReceiver {
                 if (mID == 3) {
                     int a = getEvent();
                     String size;
-                    if(a==0){
-                        size="pass";
-                    }else{
-                        size="nonpass";
+                    if (a == 0) {
+                        size = "pass";
+                    } else {
+                        size = "nonpass";
                     }
                     service_intent.putExtra("Calendar", size);
-                    System.out.println("크기"+size);
+                    System.out.println("크기" + size);
                     // start the ringtone service
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -302,7 +305,7 @@ public class Alarm_Reciver extends BroadcastReceiver {
 
             calender = java.util.Calendar.getInstance();
 
-            SimpleDateFormat simpledateformat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss+09:00", Locale.KOREA);
+            SimpleDateFormat simpledateformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss+09:00", Locale.KOREA);
 
             String calendarID = getCalendarID("혈당 관리 일정");
             if (calendarID == null) {
@@ -312,7 +315,7 @@ public class Alarm_Reciver extends BroadcastReceiver {
 
             DateTime starttime = new DateTime(simpledateformat.format(calender.getTime()));
 
-            calender.add(java.util.Calendar.SECOND,1);
+            calender.add(java.util.Calendar.SECOND, 1);
             DateTime endtime = new DateTime(simpledateformat.format(calender.getTime()));
 
 
@@ -327,7 +330,6 @@ public class Alarm_Reciver extends BroadcastReceiver {
 
             return items.size();
         }
-
 
 
         @Override
@@ -371,11 +373,12 @@ public class Alarm_Reciver extends BroadcastReceiver {
             try {
                 calendarList = mService.calendarList().list().setPageToken(pageToken).execute();
             } catch (UserRecoverableAuthIOException e) {
-                System.out.println("오류"+e.toString());
+                System.out.println("오류" + e.toString());
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (Exception e) {
                 System.out.println("유은우1" + e.toString());
+                return null;
             }
             List<CalendarListEntry> items = calendarList.getItems();
 

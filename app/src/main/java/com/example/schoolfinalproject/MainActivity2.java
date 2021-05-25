@@ -28,6 +28,7 @@ public class MainActivity2 extends AppCompatActivity {
     Fragment2 fragment2; // 기능2
     Fragment3 fragment3; // 기능3
     FirebaseUser user;
+    MypageInfo mypageInfo;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -72,35 +73,7 @@ public class MainActivity2 extends AppCompatActivity {
                 }
             }
         });
-        FirebaseDatabase database3 = FirebaseDatabase.getInstance();
-        DatabaseReference myRef3 = database3.getReference("Mypage/" + user.getUid());
-        myRef3.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                MypageInfo mypageInfo=snapshot.getValue(MypageInfo.class);
-                getSupportActionBar().setTitle(mypageInfo.getName());
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        getTitle2();
     }
 
     @Override
@@ -150,9 +123,51 @@ public class MainActivity2 extends AppCompatActivity {
                 });
                 break;
             case R.id.mypage:
+                Intent intent = new Intent(MainActivity2.this, Mypage.class);
+                startActivityForResult(intent, 0);
+                break;
+            default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        getTitle2();
+    }
+
+    public void getTitle2() {
+        FirebaseDatabase database3 = FirebaseDatabase.getInstance();
+        DatabaseReference myRef3 = database3.getReference("Mypage/" + user.getUid());
+        myRef3.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                mypageInfo = snapshot.getValue(MypageInfo.class);
+                getSupportActionBar().setTitle(mypageInfo.getName());
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
 

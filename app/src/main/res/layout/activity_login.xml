@@ -78,6 +78,7 @@
         android:layout_marginTop="32dp"
         android:layout_below="@+id/register"
         android:layout_centerHorizontal="true"
-        android:onClick="doit"/>
+        android:onClick="doit"
+        android:visibility="gone"/>
 
 </RelativeLayout>

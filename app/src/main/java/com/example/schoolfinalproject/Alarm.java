@@ -51,7 +51,7 @@ public class Alarm {
                     times[5] = Integer.parseInt(cycleTime[1]);
 
                     int taketime = 0;
-                    int cycletimeT = times[4] * 60 + times[5];
+                    int cycletimeT = times[4] * 10 + times[5];
                     if (times[0] == times[2] && times[1] == times[3]) {
                         taketime = 24 * 60;
                     } else {
@@ -96,8 +96,8 @@ public class Alarm {
                         String a = "정기 알람 " + hour + "시 " + min + "분";
                         my_intent.putExtra("state", "alarm on");
                         my_intent.putExtra("time", a);
-                        String type="cycle "+hour+":"+min;
-                        my_intent.putExtra("origin2",type);
+                        String type = "cycle " + hour + ":" + min;
+                        my_intent.putExtra("origin2", type);
                         System.out.println(type);
 
                         // 알람셋팅
@@ -141,8 +141,8 @@ public class Alarm {
                         String a = "아침 이후 알람 " + times[0] + "시 " + times[1] + "분";
                         my_intent.putExtra("state", "alarm on");
                         my_intent.putExtra("time", a);
-                        String type="breakfirst "+alarmInfo.getBreakfirst();
-                        my_intent.putExtra("origin2",type);
+                        String type = "breakfirst " + alarmInfo.getBreakfirst();
+                        my_intent.putExtra("origin2", type);
                         System.out.println(a);
 
                         // 알람셋팅
@@ -174,8 +174,8 @@ public class Alarm {
                         String a = "점심 이후 알람 " + times[0] + "시 " + times[1] + "분";
                         my_intent.putExtra("state", "alarm on");
                         my_intent.putExtra("time", a);
-                        String type="lunch "+alarmInfo.getLunch();
-                        my_intent.putExtra("origin2",type);
+                        String type = "lunch " + alarmInfo.getLunch();
+                        my_intent.putExtra("origin2", type);
                         System.out.println(a);
 
                         // 알람셋팅
@@ -207,7 +207,7 @@ public class Alarm {
                         String a = "저녁 이후 알람 " + times[0] + "시 " + times[1] + "분";
                         my_intent.putExtra("state", "alarm on");
                         my_intent.putExtra("time", a);
-                        String type="dinner "+alarmInfo.getDinner();
+                        String type = "dinner " + alarmInfo.getDinner();
                         my_intent.putExtra("origin2", type);
                         System.out.println(a);
 
@@ -243,6 +243,32 @@ public class Alarm {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void alarm3(Context context, AlarmManager alarm_manager) {
+        calendar = Calendar.getInstance();
+        my_intent = new Intent(context, Alarm_Reciver.class);
+
+
+        calendar.add(Calendar.MINUTE, 1);
+
+        String a = "위험 혈당 체크";
+        my_intent.putExtra("state", "alarm on");
+        my_intent.putExtra("time", a);
+        System.out.println(a);
+
+        // 알람셋팅
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i++, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            alarm_manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        } else if (Build.VERSION.SDK_INT >= 19) {
+            alarm_manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        } else {
+            alarm_manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        }
+        alarm2(context, alarm_manager);
+    }
+
     public void drugAlarm(int hour, int min, int what, AlarmManager alarm_manager, Context context) {
         if (what == 0) {
             calendar.set(Calendar.HOUR_OF_DAY, hour);
@@ -256,7 +282,7 @@ public class Alarm {
             String a = "개인설정 약 알람 " + hour + "시 " + min + "분";
             my_intent.putExtra("state", "alarm on");
             my_intent.putExtra("time", a);
-            my_intent.putExtra("origin2","drug "+alarmInfo.getDrugresult()+"");
+            my_intent.putExtra("origin2", "drug " + alarmInfo.getDrugresult() + "");
             System.out.println(a);
 
             // 알람셋팅
@@ -285,7 +311,7 @@ public class Alarm {
             String a = "식전30분 약 알람 " + hour + "시 " + min + "분";
             my_intent.putExtra("state", "alarm on");
             my_intent.putExtra("time", a);
-            my_intent.putExtra("origin2","drug "+alarmInfo.getDrugresult()+"");
+            my_intent.putExtra("origin2", "drug " + alarmInfo.getDrugresult() + "");
             System.out.println(a);
 
             // 알람셋팅
@@ -314,7 +340,7 @@ public class Alarm {
             String a = "식전15분 약 알람 " + hour + "시 " + min + "분";
             my_intent.putExtra("state", "alarm on");
             my_intent.putExtra("time", a);
-            my_intent.putExtra("origin2","drug "+alarmInfo.getDrugresult()+"");
+            my_intent.putExtra("origin2", "drug " + alarmInfo.getDrugresult() + "");
             System.out.println(a);
 
             // 알람셋팅
@@ -336,7 +362,7 @@ public class Alarm {
             String a = "식후 약 알람 " + hour + "시 " + min + "분";
             my_intent.putExtra("state", "alarm on");
             my_intent.putExtra("time", a);
-            my_intent.putExtra("origin2","drug "+alarmInfo.getDrugresult()+"");
+            my_intent.putExtra("origin2", "drug " + alarmInfo.getDrugresult() + "");
             System.out.println(a);
 
             // 알람셋팅

@@ -5,10 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-
+    android:background="@drawable/reason_background"
     >
 
     <TextView
+        android:fontFamily="@font/fontshape"
+        android:textColor="#D92D21"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -17,16 +19,19 @@
         android:textStyle="bold"
         />
     <TextView
+        android:fontFamily="@font/fontshape"
+        android:textColor="#CF7C63"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:id="@+id/txthighreason"
         android:text="고혈당이 오신적이 없습니다"
         android:textSize="30sp"
-
         android:layout_marginBottom="40dp"
         />
     <TextView
+        android:fontFamily="@font/fontshape"
+        android:textColor="#2F23D9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -35,13 +40,14 @@
         android:textStyle="bold"
         />
     <TextView
+        android:fontFamily="@font/fontshape"
+        android:textColor="#6561CF"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:id="@+id/txtlowreason"
         android:text="저혈당이 오신적이 없습니다"
         android:textSize="30sp"
-
         />
-    
+
 </LinearLayout>

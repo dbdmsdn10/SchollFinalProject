@@ -42,6 +42,7 @@ public class RingtonePlayingService extends Service {
         String calendar = intent.getExtras().getString("Calendar");
 
         assert getState != null;
+        System.out.println("링딩동" + getState + time);
         switch (getState) {
             case "alarm on":
                 if (Build.VERSION.SDK_INT >= 26) {
@@ -51,13 +52,14 @@ public class RingtonePlayingService extends Service {
                             NotificationManager.IMPORTANCE_DEFAULT);
 
                     ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
-                    Intent intent1=new Intent(this,CheckBlood.class);
-                    if(getState.equals("위급알람")){
-                        intent1.putExtra("위급알람","위급알람");
+                    Intent intent1 = new Intent(this, CheckBlood.class);
+                    if (getState.equals("위급알람")) {
+                        intent1.putExtra("위급알람", "위급알람");
                     }
-                    PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent1,0);
+                    intent1.putExtra("confirm", "cancle");
+                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent1, 0);
 
-                  Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                             .setContentTitle(time)
                             .setContentText("혈당체크화면에 들어가면 알람이 꺼집니다")
                             .setSmallIcon(R.mipmap.notificationicon)
@@ -74,18 +76,20 @@ public class RingtonePlayingService extends Service {
                 startId = 1;
                 break;
             case "alarm off":
+                System.out.println("알람 오프");
                 startId = 0;
                 onDestroy();
                 break;
             default:
+                System.out.println("디펄트" + getState);
                 startId = 0;
                 break;
         }
 
         // 알람음 재생 X , 알람음 시작 클릭
-        if(!this.isRunning && startId == 1 && !(calendar.equals("nonpass"))) {
+        if (!this.isRunning && startId == 1 && !(calendar.equals("nonpass"))) {
 
-            mediaPlayer = MediaPlayer.create(this,R.raw.music);
+            mediaPlayer = MediaPlayer.create(this, R.raw.music);
             mediaPlayer.start();
 
             this.isRunning = true;
@@ -93,7 +97,7 @@ public class RingtonePlayingService extends Service {
         }
 
         // 알람음 재생 O , 알람음 종료 버튼 클릭
-        else if(this.isRunning && startId == 0) {
+        else if (this.isRunning && startId == 0) {
 
             mediaPlayer.stop();
             mediaPlayer.reset();
@@ -104,7 +108,7 @@ public class RingtonePlayingService extends Service {
         }
 
         // 알람음 재생 X , 알람음 종료 버튼 클릭
-        else if(!this.isRunning && startId == 0) {
+        else if (!this.isRunning && startId == 0) {
 
             this.isRunning = false;
             this.startId = 0;
@@ -112,13 +116,11 @@ public class RingtonePlayingService extends Service {
         }
 
         // 알람음 재생 O , 알람음 시작 버튼 클릭
-        else if(this.isRunning && startId == 1){
+        else if (this.isRunning && startId == 1) {
 
             this.isRunning = true;
             this.startId = 1;
-        }
-
-        else {
+        } else {
         }
         return START_NOT_STICKY;
     }
@@ -126,6 +128,7 @@ public class RingtonePlayingService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         stopForeground(true);
         Log.d("onDestory() 실행", "서비스 파괴");
 

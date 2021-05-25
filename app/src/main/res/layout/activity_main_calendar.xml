@@ -3,49 +3,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/calendar_background2"
     >
 
 
-<!--    <ScrollView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
+    <!--    <ScrollView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent">-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <CalendarView
+            android:id="@+id/calendarContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <CalendarView
-                android:id="@+id/calendarContent"
+            <Button
+                android:background="@drawable/calendar_btn1"
+                android:fontFamily="@font/fontshape"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp"
+                android:id="@+id/btnAddSchedule"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btnAddSchedule"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="일정 추가" />
-
-
-            </LinearLayout>
-
-            <ListView
-                android:id="@+id/eventList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="5dp"
+                android:text="일정 추가" />
 
 
         </LinearLayout>
-<!--    </ScrollView>-->
+
+        <ListView
+            android:fontFamily="@font/fontshape"
+            android:id="@+id/eventList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+
+    </LinearLayout>
+    <!--    </ScrollView>-->
 
     <!--
         <ScrollView

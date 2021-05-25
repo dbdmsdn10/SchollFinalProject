@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/check_blood_background"
+    >
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -11,6 +13,7 @@
         android:gravity="center"
         >
         <TextView
+            android:fontFamily="@font/fontshape"
             android:id="@+id/btnDay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -20,6 +23,7 @@
             android:onClick="doit"
             />
         <TextView
+            android:fontFamily="@font/fontshape"
             android:id="@+id/btnTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,6 +43,7 @@
 
 
     <EditText
+        android:fontFamily="@font/fontshape"
         android:id="@+id/editblood"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -53,6 +58,10 @@
         android:orientation="horizontal">
 
         <Button
+            android:fontFamily="@font/fontshape"
+            android:background="@drawable/check_blood_btn1"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp"
             android:id="@+id/btnsetblood"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

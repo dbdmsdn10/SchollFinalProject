@@ -39,8 +39,10 @@ public class CheckBlood extends AppCompatActivity {
     EditText editblood;
     Spinner editkind;
     TextView btnDay, btnTime;
-    Context context;
+    Context context, context2;
     String key;
+
+    AlarmManager alarm_manager;
 
     SimpleDateFormat dayformat = new SimpleDateFormat("yyyy/MM/dd");
     SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm");
@@ -48,6 +50,7 @@ public class CheckBlood extends AppCompatActivity {
     //    int whenLowbool[]={0,0,0},whenHighbool[]={0,0,0};
     String whenLow[] = {"식사를 하지않았습니까?", "술을 섭취하셨습니까?", "1시간 이상의 운동하셨습니까?"};
     String whenHigh[] = {"탄수화물 섭취가 많았습니까?", "충분한 수면을 취하셨습니까", "스트레스가 많습니까?"};
+    String emer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,8 @@ public class CheckBlood extends AppCompatActivity {
         btnDay = findViewById(R.id.btnDay);
         btnTime = findViewById(R.id.btnTime);
 
+        alarm_manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
         user = FirebaseAuth.getInstance().getCurrentUser();
         long now = System.currentTimeMillis();
         Date date = new Date(now);
@@ -69,18 +74,25 @@ public class CheckBlood extends AppCompatActivity {
         btnDay.setText(txtday);
         btnTime.setText(txttime);
         context = this;
+        context2 = getApplicationContext();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent my_intent = new Intent(this.context, Alarm_Reciver.class);
         AlarmManager alarm_manager2 = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        my_intent.putExtra("state", "alarm off");
-        int i = 0;
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(CheckBlood.this, i, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = getIntent();
+        emer = intent.getStringExtra("위급상황");
+        String confirm = intent.getStringExtra("confirm");
 
-        alarm_manager2.cancel(pendingIntent);
-        // 알람취소
-        sendBroadcast(my_intent);
+        if (confirm != null && confirm.equals("cancle")) {
+            my_intent.putExtra("state", "alarm off");
+            int i = 0;
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(CheckBlood.this, i, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            alarm_manager2.cancel(pendingIntent);
+            // 알람취소
+            sendBroadcast(my_intent);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -104,15 +116,15 @@ public class CheckBlood extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 myRef = database.getReference("blood").child(user.getUid());
-                                DatabaseReference databaseReference=myRef.push();
+                                DatabaseReference databaseReference = myRef.push();
                                 databaseReference.setValue(blood);
-                                key=databaseReference.getKey();
+                                key = databaseReference.getKey();
                                 wheninfoM(0);
                             }
                         });
                         AlertDialog alertDialog = dialog.create();
                         alertDialog.show();
-
+                        doAlarm();
                     } else if (blood.getBloodSugar() >= 300) {
                         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                         dialog.setTitle("위험 고혈당입니다").setMessage("약을 섭취하거나 없다면 의사와 상담해보세요");// 약값 받는거 사용해서 있으면 먹으라고함 수정
@@ -121,15 +133,17 @@ public class CheckBlood extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 myRef = database.getReference("blood").child(user.getUid());
-                                DatabaseReference databaseReference=myRef.push();
+                                DatabaseReference databaseReference = myRef.push();
                                 databaseReference.setValue(blood);
-                                key=databaseReference.getKey();
+                                key = databaseReference.getKey();
                                 wheninfoM(1);
                             }
                         });
                         dialog.setCancelable(false);
                         AlertDialog alertDialog = dialog.create();
                         alertDialog.show();
+                        doAlarm();
+
                     } else if (blood.getBloodSugar() >= 200) {
                         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                         dialog.setTitle("고혈당입니다").setMessage("약을 섭취하거나 운동을 하는건 어떨까요");// 약값 받는거 사용해서 있으면 먹으라고함 수정
@@ -138,9 +152,9 @@ public class CheckBlood extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 myRef = database.getReference("blood").child(user.getUid());
-                                DatabaseReference databaseReference=myRef.push();
+                                DatabaseReference databaseReference = myRef.push();
                                 databaseReference.setValue(blood);
-                                key=databaseReference.getKey();
+                                key = databaseReference.getKey();
                                 wheninfoM(1);
                             }
                         });
@@ -148,10 +162,10 @@ public class CheckBlood extends AppCompatActivity {
                         alertDialog.show();
                     } else {//75~200
                         myRef = database.getReference("blood").child(user.getUid());
-                        DatabaseReference databaseReference=myRef.push();
+                        DatabaseReference databaseReference = myRef.push();
                         databaseReference.setValue(blood);
-                        key=databaseReference.getKey();
-                        key=myRef.getKey();
+                        key = databaseReference.getKey();
+                        key = myRef.getKey();
                         if (blood.getKind().equals("취침전") && blood.getBloodSugar() >= 150) {
                             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                             dialog.setTitle("조금 고혈당입니다").setMessage("저녁간식을 줄이거나 의사와 상담해보세요");// 약값 받는거 사용해서 있으면 먹으라고함 수정
@@ -174,7 +188,7 @@ public class CheckBlood extends AppCompatActivity {
 
             case R.id.btnDay:
                 String day[] = btnDay.getText().toString().split("/");
-                DatePickerDialog datePicker = new DatePickerDialog(this, listener, Integer.parseInt(day[0]), Integer.parseInt(day[1])-1, Integer.parseInt(day[2]));
+                DatePickerDialog datePicker = new DatePickerDialog(this, listener, Integer.parseInt(day[0]), Integer.parseInt(day[1]) - 1, Integer.parseInt(day[2]));
                 datePicker.show();
                 break;
             case R.id.btnTime:
@@ -185,6 +199,12 @@ public class CheckBlood extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void doAlarm() {
+        Alarm alarm = new Alarm();
+        alarm.alarm3(context2, alarm_manager);
     }
 
     private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
@@ -266,7 +286,7 @@ public class CheckBlood extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;

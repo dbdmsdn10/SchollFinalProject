@@ -2,40 +2,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/calendar_background">
 
     <TextView
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="일정 추가 화면"
-        android:textSize="30dp"
-        android:layout_marginLeft="110dp"/>
+        android:textSize="50dp"
+        android:layout_marginLeft="60dp"/>
 
     <TextView
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="일정 제목"
         android:textSize="15dp"/>
 
     <EditText
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
         android:id="@+id/calendarTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20dp"/>
 
     <TextView
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="일정 내용"
         android:textSize="15dp"/>
 
     <EditText
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
         android:id="@+id/calendarContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20dp"/>
 
     <TextView
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
         android:id="@+id/startDateSettingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,6 +59,8 @@
         android:layout_margin="5dp"/>
 
     <TextView
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
         android:id="@+id/endDateSettingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,6 +71,8 @@
 
 
     <TextView
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
         android:id="@+id/startTimeSettingText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,6 +82,8 @@
 
 
     <TextView
+        android:fontFamily="@font/fontshape"
+        android:textColor="#FFFFFF"
         android:id="@+id/endTimeSettingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -78,6 +99,11 @@
         android:layout_height="wrap_content">
 
         <Button
+            android:layout_marginTop="10dp"
+            android:background="@drawable/calendar_btn1"
+            android:fontFamily="@font/fontshape"
+            android:textColor="#FFFFFF"
+            android:textSize="15dp"
             android:id="@+id/commit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
