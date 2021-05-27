@@ -42,8 +42,6 @@ public class MainActivity2 extends AppCompatActivity {
         AlarmManager larm_manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarm.alarm2(this, larm_manager);
 
-        setTitle(user.getEmail() + "님 어서오세요");
-
         //화면 생성
         fragment1 = new Fragment1();
         fragment2 = new Fragment2();
@@ -145,7 +143,7 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 mypageInfo = snapshot.getValue(MypageInfo.class);
-                getSupportActionBar().setTitle(mypageInfo.getName());
+                getSupportActionBar().setTitle(mypageInfo.getName()+"님 어서오세요");
             }
 
             @Override

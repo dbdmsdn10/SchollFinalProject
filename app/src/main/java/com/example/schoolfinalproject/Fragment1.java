@@ -54,7 +54,7 @@ public class Fragment1 extends Fragment {
             startActivity(intent);
         });
         cycle.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), CycleAlarm.class);
+            Intent intent = new Intent(getActivity(), MainAlarm.class);
             startActivity(intent);
         });
 //        meal.setOnClickListener(v -> {

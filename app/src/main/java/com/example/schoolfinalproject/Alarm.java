@@ -68,7 +68,6 @@ public class Alarm {
                     }//총 크기 재기위한것
 
                     int timesize = taketime / cycletimeT;
-                    System.out.println("크기" + timesize);
                     // 알람매니저 설정
                     int hour = times[0];
                     int min = times[1];
@@ -98,7 +97,6 @@ public class Alarm {
                         my_intent.putExtra("time", a);
                         String type = "cycle " + hour + ":" + min;
                         my_intent.putExtra("origin2", type);
-                        System.out.println(type);
 
                         // 알람셋팅
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -143,7 +141,6 @@ public class Alarm {
                         my_intent.putExtra("time", a);
                         String type = "breakfirst " + alarmInfo.getBreakfirst();
                         my_intent.putExtra("origin2", type);
-                        System.out.println(a);
 
                         // 알람셋팅
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i++, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -176,7 +173,6 @@ public class Alarm {
                         my_intent.putExtra("time", a);
                         String type = "lunch " + alarmInfo.getLunch();
                         my_intent.putExtra("origin2", type);
-                        System.out.println(a);
 
                         // 알람셋팅
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i++, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -209,7 +205,6 @@ public class Alarm {
                         my_intent.putExtra("time", a);
                         String type = "dinner " + alarmInfo.getDinner();
                         my_intent.putExtra("origin2", type);
-                        System.out.println(a);
 
                         // 알람셋팅
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i++, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -249,12 +244,11 @@ public class Alarm {
         my_intent = new Intent(context, Alarm_Reciver.class);
 
 
-        calendar.add(Calendar.MINUTE, 1);
+        calendar.add(Calendar.MINUTE, 15);
 
         String a = "위험 혈당 체크";
         my_intent.putExtra("state", "alarm on");
         my_intent.putExtra("time", a);
-        System.out.println(a);
 
         // 알람셋팅
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i++, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -283,7 +277,7 @@ public class Alarm {
             my_intent.putExtra("state", "alarm on");
             my_intent.putExtra("time", a);
             my_intent.putExtra("origin2", "drug " + alarmInfo.getDrugresult() + "");
-            System.out.println(a);
+
 
             // 알람셋팅
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i++, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -312,7 +306,7 @@ public class Alarm {
             my_intent.putExtra("state", "alarm on");
             my_intent.putExtra("time", a);
             my_intent.putExtra("origin2", "drug " + alarmInfo.getDrugresult() + "");
-            System.out.println(a);
+
 
             // 알람셋팅
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i++, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -341,7 +335,7 @@ public class Alarm {
             my_intent.putExtra("state", "alarm on");
             my_intent.putExtra("time", a);
             my_intent.putExtra("origin2", "drug " + alarmInfo.getDrugresult() + "");
-            System.out.println(a);
+
 
             // 알람셋팅
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i++, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -363,7 +357,6 @@ public class Alarm {
             my_intent.putExtra("state", "alarm on");
             my_intent.putExtra("time", a);
             my_intent.putExtra("origin2", "drug " + alarmInfo.getDrugresult() + "");
-            System.out.println(a);
 
             // 알람셋팅
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i++, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);

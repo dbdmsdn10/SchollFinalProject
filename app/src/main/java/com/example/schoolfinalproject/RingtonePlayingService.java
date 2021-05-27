@@ -42,7 +42,6 @@ public class RingtonePlayingService extends Service {
         String calendar = intent.getExtras().getString("Calendar");
 
         assert getState != null;
-        System.out.println("링딩동" + getState + time);
         switch (getState) {
             case "alarm on":
                 if (Build.VERSION.SDK_INT >= 26) {
@@ -53,11 +52,12 @@ public class RingtonePlayingService extends Service {
 
                     ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
                     Intent intent1 = new Intent(this, CheckBlood.class);
-                    if (getState.equals("위급알람")) {
-                        intent1.putExtra("위급알람", "위급알람");
-                    }
-                    intent1.putExtra("confirm", "cancle");
-                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent1, 0);
+
+
+
+                    intent1.putExtra("time", time);
+                    intent1.putExtra("confirm", "cancel");
+                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
 
                     Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                             .setContentTitle(time)
@@ -76,12 +76,10 @@ public class RingtonePlayingService extends Service {
                 startId = 1;
                 break;
             case "alarm off":
-                System.out.println("알람 오프");
                 startId = 0;
                 onDestroy();
                 break;
             default:
-                System.out.println("디펄트" + getState);
                 startId = 0;
                 break;
         }

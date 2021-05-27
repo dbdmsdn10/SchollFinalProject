@@ -2,11 +2,18 @@ package com.example.schoolfinalproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -25,12 +32,13 @@ import java.io.InputStream;
 
 public class Logup extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    EditText id_Login_edit, pass_Login_edit,et_passck,et_pass,et_name,NOK;
+    EditText id_Login_edit, pass_Login_edit, et_passck, et_pass, et_name, NOK;
     FirebaseDatabase database;
     DatabaseReference myRef;
-    RadioButton male,female;
-    boolean passbool=false;
+    RadioButton male, female;
+    boolean passbool = false;
     Progress progress;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +46,13 @@ public class Logup extends AppCompatActivity {
         setContentView(R.layout.activity_logup);
         id_Login_edit = findViewById(R.id.et_id);
         pass_Login_edit = findViewById(R.id.et_pass);
-        et_passck=findViewById(R.id.et_passck);
-        et_pass=findViewById(R.id.et_pass);
-        female=findViewById(R.id.et_age);
-        male=findViewById(R.id.et_age2);
-        et_name=findViewById(R.id.et_name);
-        NOK=findViewById(R.id.NOK);
+        et_passck = findViewById(R.id.et_passck);
+        et_pass = findViewById(R.id.et_pass);
+        female = findViewById(R.id.et_age);
+        male = findViewById(R.id.et_age2);
+        et_name = findViewById(R.id.et_name);
+        NOK = findViewById(R.id.NOK);
+        context = getApplicationContext();
 
         database = FirebaseDatabase.getInstance();
 
@@ -55,12 +64,12 @@ public class Logup extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(et_pass.getText().toString().equals(et_passck.getText().toString())){
+                if (et_pass.getText().toString().equals(et_passck.getText().toString())) {
                     et_passck.setBackgroundColor(00000000);
-                    passbool=true;
-                }else{
+                    passbool = true;
+                } else {
                     et_passck.setBackgroundColor(Color.RED);
-                    passbool=false;
+                    passbool = false;
                 }
             }
 
@@ -78,18 +87,38 @@ public class Logup extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(et_pass.getText().toString().equals(et_passck.getText().toString())){
+                if (et_pass.getText().toString().equals(et_passck.getText().toString())) {
                     et_passck.setBackgroundColor(00000000);
-                    passbool=true;
-                }else{
+                    passbool = true;
+                } else {
                     et_passck.setBackgroundColor(Color.RED);
-                    passbool=false;
+                    passbool = false;
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+
+        NOK.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int permissonCheck = ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS);
+                if (permissonCheck == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(Logup.this, Manifest.permission.SEND_SMS)) {
+                        Toast.makeText(getApplicationContext(), "SMS권한이 필요합니다", Toast.LENGTH_SHORT).show();
+                        ActivityCompat.requestPermissions(Logup.this, new String[]{Manifest.permission.SEND_SMS}, 1);
+                    } else {
+                        ActivityCompat.requestPermissions(Logup.this, new String[]{Manifest.permission.SEND_SMS}, 1);
+                    }
+                }
+                return false;
             }
         });
 
@@ -113,14 +142,14 @@ public class Logup extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "이메일 형식이 아닙니다", Toast.LENGTH_SHORT).show();
                 } else if (strpasswd.length() < 8) {
                     Toast.makeText(getApplicationContext(), "비밀번호는 8자리 이상이여야 합니다", Toast.LENGTH_SHORT).show();
-                } else if(!passbool){
+                } else if (!passbool) {
                     Toast.makeText(getApplicationContext(), "비밀번호가 같지않습니다", Toast.LENGTH_SHORT).show();
-                }else if(et_name.getText().toString().trim().isEmpty()){
+                } else if (et_name.getText().toString().trim().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "이름을 적어주세요", Toast.LENGTH_SHORT).show();
-                }else if((!male.isChecked())&&(!female.isChecked())){
+                } else if ((!male.isChecked()) && (!female.isChecked())) {
                     Toast.makeText(getApplicationContext(), "성별을 선택해주세요", Toast.LENGTH_SHORT).show();
-                }else {
-                    progress=new Progress(Logup.this);
+                } else {
+                    progress = new Progress(Logup.this);
                     registUser(stremail, strpasswd);
                 }
                 break;
@@ -142,16 +171,16 @@ public class Logup extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
 
-                        MypageInfo mypageInfo=new MypageInfo();
+                        MypageInfo mypageInfo = new MypageInfo();
                         mypageInfo.setName(et_name.getText().toString());
                         mypageInfo.setAuto("N");
-                        if(male.isChecked()){
+                        if (male.isChecked()) {
                             mypageInfo.setGender("M");
-                        }else{
+                        } else {
                             mypageInfo.setGender("F");
                         }
                         mypageInfo.setNOK(NOK.getText().toString());
-                        myRef=database.getReference("Mypage").child(user.getUid());
+                        myRef = database.getReference("Mypage").child(user.getUid());
                         myRef.push().setValue(mypageInfo);
                         Toast.makeText(getApplicationContext(), "등록 성공", Toast.LENGTH_SHORT).show();
                         database = FirebaseDatabase.getInstance();
@@ -159,18 +188,18 @@ public class Logup extends AppCompatActivity {
                         finish();
                     } else {
                         progress.stop();
-                        try{
+                        try {
                             throw task.getException();
-                        }catch(FirebaseAuthUserCollisionException existEmail){
+                        } catch (FirebaseAuthUserCollisionException existEmail) {
                             Toast.makeText(getApplicationContext(), "이미 존재하는 email입니다", Toast.LENGTH_SHORT).show();
-                        }
-                        catch(Exception e){
+                        } catch (Exception e) {
                             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
             });
-        } catch (Exception e){}
+        } catch (Exception e) {
+        }
     }
 
 }

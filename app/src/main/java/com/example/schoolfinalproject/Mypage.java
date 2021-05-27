@@ -1,14 +1,21 @@
 package com.example.schoolfinalproject;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,12 +31,12 @@ public class Mypage extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference myRef;
     RadioButton male, female;
-    boolean passbool = false;
     Progress progress;
     Button btnedit, cancle;
     FirebaseUser user;
     String key;
     MypageInfo mypageInfo;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,7 @@ public class Mypage extends AppCompatActivity {
         male = findViewById(R.id.et_age2);
         et_name = findViewById(R.id.et_name);
         NOK = findViewById(R.id.NOK);
+        context=getApplicationContext();
 
         database = FirebaseDatabase.getInstance();
 
@@ -94,6 +102,23 @@ public class Mypage extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        NOK.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int permissonCheck= ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS);
+                if(permissonCheck == PackageManager.PERMISSION_GRANTED){
+                }else{
+                    if(ActivityCompat.shouldShowRequestPermissionRationale(Mypage.this, Manifest.permission.SEND_SMS)){
+                        Toast.makeText(getApplicationContext(), "SMS권한이 필요합니다", Toast.LENGTH_SHORT).show();
+                        ActivityCompat.requestPermissions(Mypage.this, new String[]{ Manifest.permission.SEND_SMS}, 1);
+                    }else{
+                        ActivityCompat.requestPermissions(Mypage.this, new String[]{ Manifest.permission.SEND_SMS}, 1);
+                    }
+                }
+                return false;
             }
         });
     }

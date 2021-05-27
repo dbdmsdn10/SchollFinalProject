@@ -138,10 +138,6 @@ public class Alarm_Reciver extends BroadcastReceiver {
                                     hour -= 24;
                                 }
                                 if (origin[1].equals(hour + ":" + min)) {
-                                    System.out.println(alarmInfo.getStartTime() + "\n" + alarmInfo.getEndTime() + "\n" + alarmInfo.getCycleTime());
-                                    System.out.println("오리진=" + origin[1]);
-
-                                    System.out.println("시간=" + hour + ":" + min);
                                     doalarm(time, get_yout_string);
                                 }
                             }
@@ -270,7 +266,6 @@ public class Alarm_Reciver extends BroadcastReceiver {
          */
         @Override
         protected String doInBackground(Void... params) {
-            System.out.println("백그라운드 실행");
             try {
                 if (mID == 3) {
                     int a = getEvent();
@@ -281,7 +276,6 @@ public class Alarm_Reciver extends BroadcastReceiver {
                         size = "nonpass";
                     }
                     service_intent.putExtra("Calendar", size);
-                    System.out.println("크기" + size);
                     // start the ringtone service
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -335,7 +329,6 @@ public class Alarm_Reciver extends BroadcastReceiver {
         @Override
         protected void onPostExecute(String output) {
             //mStatusText.setText(output);
-            System.out.println(output);
 
             if (mID == 3)
                 System.out.println(TextUtils.join("\n\n", eventStrings)); //mResultText.setText(TextUtils.join("\n\n", eventStrings));
@@ -374,8 +367,10 @@ public class Alarm_Reciver extends BroadcastReceiver {
                 calendarList = mService.calendarList().list().setPageToken(pageToken).execute();
             } catch (UserRecoverableAuthIOException e) {
                 System.out.println("오류" + e.toString());
+                return null;
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             } catch (Exception e) {
                 System.out.println("유은우1" + e.toString());
                 return null;

@@ -31,7 +31,7 @@
                 android:background="@drawable/calendar_btn1"
                 android:fontFamily="@font/fontshape"
                 android:textColor="#FFFFFF"
-                android:textSize="15dp"
+                android:textSize="17dp"
                 android:id="@+id/btnAddSchedule"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
