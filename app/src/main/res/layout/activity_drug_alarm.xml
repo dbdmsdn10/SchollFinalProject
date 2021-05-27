@@ -36,8 +36,6 @@
         android:onClick="doit"
         />
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -54,28 +52,6 @@
             android:layout_margin="20dp"
             android:text="적용"
             android:onClick="doit"/>
-        <Button
-            android:fontFamily="@font/fontshape"
-            android:textSize="17sp"
-            android:background="@drawable/alarm_btn1"
-            android:textColor="#FFFFFF"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="취소"
-            android:onClick="doit"/>
-        <Button
-            android:fontFamily="@font/fontshape"
-            android:textSize="17sp"
-            android:background="@drawable/alarm_btn1"
-            android:textColor="#FFFFFF"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="테스트"
-            android:onClick="doit"/>
-
-
     </LinearLayout>
 
 </LinearLayout>
