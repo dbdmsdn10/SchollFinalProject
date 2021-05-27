@@ -4,9 +4,11 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:background="@drawable/drug_alarm_background"
     >
 
     <Spinner
+        android:fontFamily="@font/fontshape"
         android:id="@+id/drugspinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,6 +16,7 @@
         android:layout_marginBottom="20dp"
         />
     <Spinner
+        android:fontFamily="@font/fontshape"
         android:id="@+id/whenspinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,6 +25,7 @@
         android:visibility="gone"
         />
     <TextView
+        android:fontFamily="@font/fontshape"
         android:id="@+id/drugtime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,11 +44,35 @@
         android:orientation="horizontal"
         android:gravity="center">
         <Button
+            android:fontFamily="@font/fontshape"
+            android:textSize="17sp"
+            android:background="@drawable/alarm_btn1"
+            android:textColor="#FFFFFF"
             android:id="@+id/btndrugset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:text="적용"
+            android:onClick="doit"/>
+        <Button
+            android:fontFamily="@font/fontshape"
+            android:textSize="17sp"
+            android:background="@drawable/alarm_btn1"
+            android:textColor="#FFFFFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="취소"
+            android:onClick="doit"/>
+        <Button
+            android:fontFamily="@font/fontshape"
+            android:textSize="17sp"
+            android:background="@drawable/alarm_btn1"
+            android:textColor="#FFFFFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="테스트"
             android:onClick="doit"/>
 
 

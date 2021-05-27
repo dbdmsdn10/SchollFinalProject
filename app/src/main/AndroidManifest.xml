@@ -24,7 +24,7 @@
         <activity android:name=".CheckBlood" />
         <activity android:name=".Home" />
         <activity android:name=".Logup" />
-        <activity android:name=".Login">
+        <activity android:name=".IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,6 +37,7 @@
         <activity android:name=".Excercise"/>
         <activity android:name=".Pedometer"/>
         <activity android:name=".StopWatchActivity"/>
+        <activity android:name=".Login"/>
 
         <receiver android:name=".Alarm_Reciver" />
 
