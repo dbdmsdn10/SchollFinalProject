@@ -101,8 +101,9 @@ public class CheckBlood extends AppCompatActivity {
             System.out.println("취소 보냄");
         }
 
-
+        System.out.println("위험 1"+ confirm2);
         if (confirm2 != null && confirm2.equals("위험 혈당 체크")) {
+            System.out.println("위험?");
             boolemer = true;
             editkind.setVisibility(View.GONE);
             btnDay.setVisibility(View.GONE);
@@ -408,7 +409,9 @@ public class CheckBlood extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                sendSMS(-1);
+                if(boolemer) {
+                    sendSMS(-1);
+                }
                 finish();
                 return true;
         }
@@ -418,7 +421,9 @@ public class CheckBlood extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        sendSMS(-1);
+        if(boolemer) {
+            sendSMS(-1);
+        }
         finish();
     }
 }

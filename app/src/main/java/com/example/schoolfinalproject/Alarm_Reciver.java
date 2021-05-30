@@ -82,106 +82,109 @@ public class Alarm_Reciver extends BroadcastReceiver {
         }
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        FirebaseDatabase database3 = FirebaseDatabase.getInstance();
-        DatabaseReference myRef3 = database3.getReference("Alarm/" + user.getUid());
-        try {
-            myRef3.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {// 주기알람시작
-                    AlarmInfo alarmInfo = (AlarmInfo) snapshot.getValue(AlarmInfo.class);
-                    if (origin2 == null) {
-                        doalarm(time, get_yout_string);
-                    } else if (origin[0].equals("cycle")) {
-                        if (alarmInfo.getStartTime() == null) {
+        if (origin2 == null) {
+            doalarm(time, get_yout_string);
+        } else {
+            try {
+                FirebaseDatabase database3 = FirebaseDatabase.getInstance();
+                DatabaseReference myRef3 = database3.getReference("Alarm/" + user.getUid());
+                myRef3.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {// 주기알람시작
+                        AlarmInfo alarmInfo = (AlarmInfo) snapshot.getValue(AlarmInfo.class);
+                        if (origin[0].equals("cycle")) {
+                            if (alarmInfo.getStartTime() == null) {
 
-                        } else {
-                            int times[] = new int[6];
-                            String startTime[] = alarmInfo.getStartTime().split(":");
-                            String endTime[] = alarmInfo.getEndTime().split(":");
-                            String cycleTime[] = alarmInfo.getCycleTime().split(":");
-                            times[0] = Integer.parseInt(startTime[0]);
-                            times[1] = Integer.parseInt(startTime[1]);
-                            times[2] = Integer.parseInt(endTime[0]);
-                            times[3] = Integer.parseInt(endTime[1]);
-                            times[4] = Integer.parseInt(cycleTime[0]);
-                            times[5] = Integer.parseInt(cycleTime[1]);
-
-                            int taketime = 0;
-                            int cycletimeT = times[4] * 60 + times[5];
-                            if (times[0] == times[2] && times[1] == times[3]) {
-                                taketime = 24 * 60;
                             } else {
-                                if (times[0] > times[2]) {
-                                    taketime += ((24 - times[0]) + times[2]) * 60;
-                                } else {
-                                    taketime += (times[2] - times[0]) * 60;
-                                }
-                                if (times[1] > times[3]) {
-                                    taketime += (60 - times[1]) + times[3] - 60;
-                                } else {
-                                    taketime += times[3] - times[1];
-                                }
-                            }//총 크기 재기위한것
+                                int times[] = new int[6];
+                                String startTime[] = alarmInfo.getStartTime().split(":");
+                                String endTime[] = alarmInfo.getEndTime().split(":");
+                                String cycleTime[] = alarmInfo.getCycleTime().split(":");
+                                times[0] = Integer.parseInt(startTime[0]);
+                                times[1] = Integer.parseInt(startTime[1]);
+                                times[2] = Integer.parseInt(endTime[0]);
+                                times[3] = Integer.parseInt(endTime[1]);
+                                times[4] = Integer.parseInt(cycleTime[0]);
+                                times[5] = Integer.parseInt(cycleTime[1]);
 
-                            int timesize = taketime / cycletimeT;
-                            // 알람매니저 설정
-                            int hour = times[0];
-                            int min = times[1];
-                            for (int i = 0; i < timesize; i++) {
-                                min += times[5];
-                                if (min >= 60) {
-                                    hour++;
-                                    min -= 60;
-                                }
-                                hour += times[4];
-                                if (hour > 24) {
-                                    hour -= 24;
-                                }
-                                if (origin[1].equals(hour + ":" + min)) {
-                                    doalarm(time, get_yout_string);
+                                int taketime = 0;
+                                int cycletimeT = times[4] * 60 + times[5];
+                                if (times[0] == times[2] && times[1] == times[3]) {
+                                    taketime = 24 * 60;
+                                } else {
+                                    if (times[0] > times[2]) {
+                                        taketime += ((24 - times[0]) + times[2]) * 60;
+                                    } else {
+                                        taketime += (times[2] - times[0]) * 60;
+                                    }
+                                    if (times[1] > times[3]) {
+                                        taketime += (60 - times[1]) + times[3] - 60;
+                                    } else {
+                                        taketime += times[3] - times[1];
+                                    }
+                                }//총 크기 재기위한것
+
+                                int timesize = taketime / cycletimeT;
+                                // 알람매니저 설정
+                                int hour = times[0];
+                                int min = times[1];
+                                for (int i = 0; i < timesize; i++) {
+                                    min += times[5];
+                                    if (min >= 60) {
+                                        hour++;
+                                        min -= 60;
+                                    }
+                                    hour += times[4];
+                                    if (hour > 24) {
+                                        hour -= 24;
+                                    }
+                                    if (origin[1].equals(hour + ":" + min)) {
+                                        doalarm(time, get_yout_string);
+                                    }
                                 }
                             }
-                        }
-                    } else if (origin[0].equals("breakfirst")) {
-                        if (alarmInfo.getBreakfirst() != null && origin[1].equals(alarmInfo.getBreakfirst())) {
-                            doalarm(time, get_yout_string);
-                        }
-                    } else if (origin[0].equals("lunch")) {
-                        if (alarmInfo.getLunch() != null && origin[1].equals(alarmInfo.getLunch())) {
-                            doalarm(time, get_yout_string);
-                        }
-                    } else if (alarmInfo.getDinner() != null && origin[0].equals("dinner")) {
-                        if (origin[1].equals(alarmInfo.getDinner())) {
-                            doalarm(time, get_yout_string);
-                        }
-                    } else if (origin[0].equals("drug")) {
-                        if (origin[1].equals(alarmInfo.getDrugresult())) {
-                            doalarm(time, get_yout_string);
+                        } else if (origin[0].equals("breakfirst")) {
+                            if (alarmInfo.getBreakfirst() != null && origin[1].equals(alarmInfo.getBreakfirst())) {
+                                doalarm(time, get_yout_string);
+                            }
+                        } else if (origin[0].equals("lunch")) {
+                            if (alarmInfo.getLunch() != null && origin[1].equals(alarmInfo.getLunch())) {
+                                doalarm(time, get_yout_string);
+                            }
+                        } else if (alarmInfo.getDinner() != null && origin[0].equals("dinner")) {
+                            if (origin[1].equals(alarmInfo.getDinner())) {
+                                doalarm(time, get_yout_string);
+                            }
+                        } else if (origin[0].equals("drug")) {
+                            if (origin[1].equals(alarmInfo.getDrugresult())) {
+                                doalarm(time, get_yout_string);
+                            }
                         }
                     }
-                }
 
 
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                }
+                    }
 
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
 
-                }
+                    }
 
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                }
+                    }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
-        } catch (Exception e) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
         }
 
     }

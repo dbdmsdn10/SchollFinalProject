@@ -95,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="doit"
-            android:text="주기알람" />
+            android:text="알람설정" />
     </LinearLayout>
 
 </LinearLayout>

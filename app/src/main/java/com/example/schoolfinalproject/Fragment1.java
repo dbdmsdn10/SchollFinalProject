@@ -33,7 +33,7 @@ public class Fragment1 extends Fragment {
 
 
         stopwatch.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), Excercise.class);
+            Intent intent = new Intent(getActivity(), StopWatchActivity.class);
             startActivity(intent);
         });
 

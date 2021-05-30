@@ -102,7 +102,7 @@ public class Fragment2 extends Fragment {
                 high=count[1][i];
                 sethigh=whenHigh[i];
             }else if(count[1][i]!=0&&high==count[1][i]){
-                sethigh=("\n"+whenHigh[i]);
+                sethigh+=("\n"+whenHigh[i]);
             }
         }
         highReason.setText(sethigh);

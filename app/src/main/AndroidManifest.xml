@@ -20,6 +20,7 @@
         <activity android:name=".MainAlarm"></activity>
         <activity android:name=".DrugAlarm" />
         <activity android:name=".EditCalendar" />
+        <activity android:name=".EditBlood"/>
         <activity android:name=".MealAlarm" />
         <activity android:name=".CycleAlarm" />
         <activity android:name=".GraphScreen" />

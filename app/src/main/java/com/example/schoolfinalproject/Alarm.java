@@ -244,7 +244,7 @@ public class Alarm {
         my_intent = new Intent(context, Alarm_Reciver.class);
 
 
-        calendar.add(Calendar.MINUTE, 15);
+        calendar.add(Calendar.SECOND, 10);
 
         String a = "위험 혈당 체크";
         my_intent.putExtra("state", "alarm on");
